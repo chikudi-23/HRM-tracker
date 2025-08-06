@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Login | HRM Flow</title>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body style="background: linear-gradient(to right, #1e90ff, #00bfff); font-family: Arial, sans-serif;">
+<div style="width: 350px; margin: 100px auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.2);">
+  <h2 style="text-align: center; color: #0066ff;">HRM Login</h2>
+  <form method="post" action="/login">
+    <label>Email</label>
+    <input type="email" name="username" placeholder="Enter your email" required class="form-control" style="width: 100%; padding: 10px; margin-bottom: 15px;" />
+    <label>Password</label>
+    <input type="password" name="password" placeholder="Enter password" required class="form-control" style="width: 100%; padding: 10px; margin-bottom: 20px;" />
+    <button type="submit" style="width: 100%; background-color: #0066ff; color: white; border: none; padding: 10px; border-radius: 5px;">Login</button>
+  </form>
+
+  <!-- Google OAuth2 login -->
+  <div style="text-align: center; margin-top: 20px;">
+    <a href="/oauth2/authorization/google">
+      <button type="button" style="width: 100%; background-color: red; color: white; border: none; padding: 10px; border-radius: 5px;">
+        Login with Google
+      </button>
+    </a>
+  </div>
+
+  <p style="text-align: center; margin-top: 20px;">
+    <a href="/register" style="text-decoration: none; color: #0066ff;">Don't have an account? Register</a>
+  </p>
+</div>
+</body>
+</html>
