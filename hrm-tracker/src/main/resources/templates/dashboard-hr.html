@@ -1,34 +1,438 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+  <meta charset="UTF-8" />
   <title>HR Dashboard</title>
-  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <style>
+    /* Your existing styles (unchanged) */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f2f5;
+    }
+
+    .dashboard-container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 250px;
+      background: linear-gradient(to bottom, #001f3f, #0074D9);
+      color: #fff;
+      padding: 30px 20px;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    }
+
+    .sidebar h2 {
+      font-size: 24px;
+      margin-bottom: 30px;
+      color: #7FDBFF;
+    }
+
+    .sidebar ul {
+      list-style: none;
+    }
+
+    .sidebar ul li {
+      margin: 20px 0;
+    }
+
+    .sidebar ul li a {
+      text-decoration: none;
+      color: #ccefff;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .sidebar ul li a:hover{
+      color: #ffffff;
+      padding-left: 8px;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      padding: 30px;
+      background-color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .topbar h1 {
+      font-size: 26px;
+      color: #333;
+    }
+
+    .logout-btn {
+      background: linear-gradient(45deg, #ff4b2b, #ff416c);
+      color: white;
+      padding: 10px 18px;
+      text-decoration: none;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .logout-btn:hover {
+      background: linear-gradient(45deg, #e63e2e, #e03362);
+    }
+
+    /* Cards */
+    .cards-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      padding: 25px;
+      border-radius: 14px;
+      color: white;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+      transition: transform 0.3s ease;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    /* Colorful Cards (Color Boxes) */
+    .card:nth-child(1) { background: linear-gradient(to right, #43cea2, #185a9d); }
+    .card:nth-child(2) { background: linear-gradient(to right, #f7971e, #ffd200); }
+    .card:nth-child(3) { background: linear-gradient(to right, #ff512f, #dd2476); }
+    .card:nth-child(4) { background: linear-gradient(to right, #2193b0, #6dd5ed); }
+    .card:nth-child(5) { background: linear-gradient(to right, #00c6ff, #0072ff); }
+    .card:nth-child(6) { background: linear-gradient(to right, #f857a6, #ff5858); }
+
+    .card h3 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    /* Employee Details Section */
+    #employee-details-section {
+      display: none;
+      margin-top: 20px;
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 20px;
+      border-radius: 10px;
+      background-color: #fff;
+      overflow-x: auto;
+    }
+
+    #employee-details-section h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    #employees-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 15px;
+    }
+
+    #employees-table th, #employees-table td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    #employees-table th {
+      background-color: #0074D9;
+      color: white;
+      white-space: nowrap;
+    }
+
+    #employees-table tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    #employees-table tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    #employee-details-section button {
+      display: block;
+      margin: 0 auto;
+      padding: 8px 15px;
+      font-size: 14px;
+      border: none;
+      border-radius: 6px;
+      background-color: #185a9d;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    #employee-details-section button:hover {
+      background-color: #43cea2;
+    }
+
+    /* Document view icons */
+    .doc-link {
+      color: #0074D9;
+      font-size: 18px;
+      text-decoration: none;
+    }
+
+    .doc-link:hover {
+      color: #005fa3;
+    }
+
+    /* Loader Styles */
+    #loader-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(255,255,255,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.3s;
+    }
+    #loader-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .spinner {
+      border: 8px solid #f3f3f3;
+      border-top: 8px solid #0074D9;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg);}
+      100% { transform: rotate(360deg);}
+    }
+  </style>
 </head>
 <body>
+
+<!-- Loader overlay -->
+<div id="loader-overlay" class="hidden">
+  <div class="spinner"></div>
+</div>
+
 <div class="dashboard-container">
+
+  <!-- Sidebar -->
   <div class="sidebar">
     <h2>HR Panel</h2>
     <ul>
-      <li><a href="#">Dashboard</a></li>
-      <li><a href="#">Departments</a></li>
-      <li><a href="#">Employees</a></li>
+      <li><a th:href="@{/dashboard}" class="active">Dashboard</a></li>
+      <li><a th:href="@{/profile}">Profile</a></li>
     </ul>
   </div>
+
+  <!-- Main Content -->
   <div class="main-content">
     <div class="topbar">
       <h1>Welcome, <span th:text="${user.fullName}">HR</span></h1>
 
-      <form id="logoutForm" action="/logout" method="post" style="display: none;">
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+      <form id="logoutForm" th:action="@{/logout}" method="post" style="display:none;">
+        <input type="hidden"
+               th:if="${_csrf != null}"
+               th:name="${_csrf.parameterName}"
+               th:value="${_csrf.token}" />
       </form>
 
-      <a href="#" onclick="document.getElementById('logoutForm').submit();" class="logout-btn">Logout</a>
-
+      <button onclick="document.getElementById('logoutForm').submit();" class="logout-btn">Logout</button>
     </div>
-    <div class="content">
-      <p>You are logged in as <strong>HR</strong>.</p>
+
+    <!-- Cards container -->
+    <div class="cards-container" id="dashboard-section">
+      <div class="card" id="total-employees-card" title="Click to view all employees">
+        <h3>Total Employees</h3>
+        <p th:text="${dashboardStats.totalEmployees}">0</p>
+      </div>
+
+      <div class="card yellow-gradient">
+        <h3>Pending Leaves</h3>
+        <p th:text="${dashboardStats.pendingLeaves}">0</p>
+      </div>
+
+      <div class="card pink-gradient">
+        <h3>Total Announcements</h3>
+        <p th:text="${dashboardStats.totalAnnouncements}">0</p>
+      </div>
+
+      <div class="card green-gradient">
+        <h3>Today's Attendance</h3>
+        <p th:text="${dashboardStats.totalAttendanceToday}">0</p>
+      </div>
+
+      <div class="card indigo-gradient">
+        <h3>Approved Leaves</h3>
+        <p th:text="${dashboardStats.approvedLeaves}">0</p>
+      </div>
+
+      <div class="card red-gradient">
+        <h3>Rejected Leaves</h3>
+        <p th:text="${dashboardStats.rejectedLeaves}">0</p>
+      </div>
+    </div>
+
+    <!-- Employee Details Section -->
+    <div id="employee-details-section">
+      <h2>Employees List</h2>
+      <table id="employees-table" border="1" cellpadding="10" cellspacing="0">
+        <thead>
+        <tr>
+          <th>Name</th><th>Email</th><th>Phone</th><th>Department</th><th>Auth Provider</th>
+          <th>ID Proof</th><th>Resume</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <button onclick="hideEmployeeDetails()">Back</button>
     </div>
   </div>
+
 </div>
+
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  var currentUserRole = /*[[${user.role.name}]]*/ 'GUEST';
+  /*]]>*/
+</script>
+
+<script>
+  // Helper function to safely build upload links without double "/uploads/"
+  function getSafeUploadLink(path) {
+    if (!path) return '';
+    let cleanPath = path;
+
+    // Remove starting "/" if present
+    if (cleanPath.startsWith('/')) {
+      cleanPath = cleanPath.substring(1);
+    }
+
+    // Remove "uploads/" prefix if present
+    if (cleanPath.startsWith("uploads/")) {
+      cleanPath = cleanPath.substring("uploads/".length);
+    }
+
+    return `/uploads/${cleanPath}`;
+  }
+
+  // Show loader
+  function showLoader() {
+    document.getElementById('loader-overlay').classList.remove('hidden');
+  }
+  // Hide loader
+  function hideLoader() {
+    document.getElementById('loader-overlay').classList.add('hidden');
+  }
+
+  // Handle click on total employees card
+  document.getElementById('total-employees-card').addEventListener('click', function(event) {
+    event.preventDefault();
+
+    showLoader();
+
+    const tbody = document.querySelector('#employees-table tbody');
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Loading...</td></tr>';
+
+    fetch('/employees')
+      .then(response => {
+        if (!response.ok) throw new Error('Network response was not OK');
+        return response.json();
+      })
+      .then(data => {
+        tbody.innerHTML = '';
+        if (data.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No employees found.</td></tr>';
+        } else {
+          data.forEach(emp => {
+            let idProofLink = '-';
+            let resumeLink = '-';
+
+            // Show document links only if current user is ADMIN or HR
+            if (currentUserRole === 'ADMIN' || currentUserRole === 'HR') {
+              if (emp.idProofPath) {
+                idProofLink = `<a href="${getSafeUploadLink(emp.idProofPath)}" target="_blank" title="View ID Proof" class="doc-link"><i class="fa fa-eye"></i></a>`;
+              }
+              if (emp.resumePath) {
+                resumeLink = `<a href="${getSafeUploadLink(emp.resumePath)}" target="_blank" title="View Resume" class="doc-link"><i class="fa fa-eye"></i></a>`;
+              }
+            }
+
+            const row = `
+              <tr>
+                <td>${emp.name}</td>
+                <td>${emp.email}</td>
+                <td>${emp.phone || '-'}</td>
+                <td>${emp.departmentName || '-'}</td>
+                <td>${emp.authProvider || '-'}</td>
+                <td style="text-align:center;">${idProofLink}</td>
+                <td style="text-align:center;">${resumeLink}</td>
+              </tr>`;
+            tbody.innerHTML += row;
+          });
+        }
+
+        // Show employee list and hide dashboard cards
+        document.getElementById('employee-details-section').style.display = 'block';
+        document.getElementById('dashboard-section').style.display = 'none';
+
+        hideLoader();
+      })
+      .catch(error => {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:red;">Error loading employees.</td></tr>`;
+        console.error('Fetch error:', error);
+        hideLoader();
+      });
+  });
+
+  // Hide employee list and show dashboard cards again
+  function hideEmployeeDetails() {
+    document.getElementById('employee-details-section').style.display = 'none';
+    document.getElementById('dashboard-section').style.display = 'grid';
+  }
+
+  // Show loader on logout submit
+  window.addEventListener('DOMContentLoaded', function() {
+    hideLoader();
+
+    document.getElementById('logoutForm').addEventListener('submit', function() {
+      showLoader();
+    });
+  });
+</script>
 </body>
 </html>

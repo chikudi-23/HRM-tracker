@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error - Something went wrong</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            color: #333;
+            text-align: center;
+            padding-top: 50px;
+        }
+        .error-box {
+            background-color: #fff;
+            display: inline-block;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #e74c3c;
+        }
+        .code {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        a {
+            margin-top: 20px;
+            display: inline-block;
+            color: #3498db;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="error-box">
+    <h1>Oops! An error occurred</h1>
+    <p class="code">Status Code: <span th:text="${status}">Unknown</span></p>
+    <p th:text="${error}">Error type</p>
+    <p th:text="${message}">Error message</p>
+    <a th:href="@{/login}">Return to Login Page</a>
+
+</div>
+</body>
+</html>

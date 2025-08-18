@@ -1,10 +1,10 @@
 package com.hrmtracker.dto;
 
-import com.hrmtracker.entity.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -25,7 +25,10 @@ public class UserRegistrationDto {
     private String phone;
 
     @NotNull(message = "Role is required")
-    private Role role;
+    private Long roleId;
 
     private Long departmentId;
+
+    // Joining date (for Admin, HR, Employee only)
+ //   private LocalDate joiningDate;
 }

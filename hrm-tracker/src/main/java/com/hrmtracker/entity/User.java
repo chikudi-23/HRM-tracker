@@ -2,6 +2,7 @@ package com.hrmtracker.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "users")
@@ -31,12 +32,21 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
     private Department department;
 
-    private boolean active = true;
     @Enumerated(EnumType.STRING)
+    @Column(name = "auth_provider")
     private AuthProvider authProvider;
+
+    @Column(name = "id_proof_path")
+    private String idProofPath;
+
+    @Column(name = "resume_path")
+    private String resumePath;
+
+
+    // Only for Admin, HR, Employee
+    //private LocalDate joiningDate;
 }

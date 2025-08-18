@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Audit Logs</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; }
+        .dashboard-container { display: flex; min-height: 100vh; }
+        .sidebar { width: 250px; background: linear-gradient(to bottom, #001f3f, #0074D9); color: #fff; padding: 30px 20px; }
+        .sidebar h2 { font-size: 24px; margin-bottom: 30px; color: #7FDBFF; }
+        .sidebar ul { list-style: none; }
+        .sidebar ul li { margin: 20px 0; }
+        .sidebar ul li a { text-decoration: none; color: #ccefff; font-size: 16px; transition: 0.3s; }
+        .sidebar ul li a:hover { color: #fff; padding-left: 8px; }
+        .main-content { flex: 1; padding: 30px; background: #fff; }
+        .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .topbar h1 { font-size: 26px; color: #333; }
+        .logout-btn { background: linear-gradient(45deg, #ff4b2b, #ff416c); color: white; padding: 10px 18px; border: none; border-radius: 6px; cursor: pointer; }
+        .logout-btn:hover { background: linear-gradient(45deg, #e63e2e, #e03362); }
+        table { width: 100%; border-collapse: collapse; background-color: white; box-shadow: 0 0 10px #ccc; }
+        th, td { padding: 0.8rem; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #3c8dbc; color: white; }
+        tr:hover { background-color: #f1f1f1; }
+
+        /* Loader Styles */
+        #loader-overlay {
+          position: fixed;
+          top: 0; left: 0; width: 100vw; height: 100vh;
+          background: rgba(255,255,255,0.7);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 9999;
+          transition: opacity 0.3s;
+        }
+        #loader-overlay.hidden {
+          opacity: 0;
+          pointer-events: none;
+        }
+        .spinner {
+          border: 8px solid #f3f3f3;
+          border-top: 8px solid #0074D9;
+          border-radius: 50%;
+          width: 60px;
+          height: 60px;
+          animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+          0% { transform: rotate(0deg);}
+          100% { transform: rotate(360deg);}
+        }
+    </style>
+</head>
+<body>
+
+<!-- Loader overlay -->
+<div id="loader-overlay" class="hidden">
+    <div class="spinner"></div>
+</div>
+
+<div class="dashboard-container">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Admin Panel</h2>
+        <ul>
+            <li><a th:href="@{/dashboard}">Dashboard</a></li>
+            <li><a th:href="@{/admin/audit-logs}" class="active">Audit Logs</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="topbar">
+            <h1>Audit Logs</h1>
+            <form id="logoutForm" th:action="@{/logout}" method="post" style="display:none;">
+                <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            </form>
+            <button onclick="document.getElementById('logoutForm').submit();" class="logout-btn">Logout</button>
+        </div>
+
+        <!-- Audit Log Table -->
+        <table>
+            <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>Username</th>
+                <th>Entity</th>
+                <th>Old Value</th>
+                <th>New Value</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="log : ${logs}">
+                <td th:text="${log.timestamp}"></td>
+                <td th:text="${log.username}"></td>
+                <td th:text="${log.entity}"></td>
+                <td th:text="${log.oldValue}"></td>
+                <td th:text="${log.newValue}"></td>
+                <td th:text="${log.action}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<script>
+    function showLoader() {
+      document.getElementById('loader-overlay').classList.remove('hidden');
+    }
+    function hideLoader() {
+      document.getElementById('loader-overlay').classList.add('hidden');
+    }
+    window.addEventListener('DOMContentLoaded', function() {
+      hideLoader();
+      document.getElementById('logoutForm').addEventListener('submit', showLoader);
+    });
+</script>
+
+</body>
+</html>

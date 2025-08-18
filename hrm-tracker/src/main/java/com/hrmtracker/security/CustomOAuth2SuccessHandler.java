@@ -34,27 +34,39 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
         String email = oAuth2User.getAttribute("email");
         String name = oAuth2User.getAttribute("name");
 
-        Optional<User> existingUser = userRepository.findByEmail(email);
+        if (email == null) {
+            throw new RuntimeException("OAuth2 provider did not return an email.");
+        }
 
-        if (existingUser.isEmpty()) {
-            // Create new user
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+
+        if (optionalUser.isEmpty()) {
             User newUser = new User();
             newUser.setEmail(email);
             newUser.setFullName(name);
-            newUser.setPassword(""); // No password for OAuth2 users
-            newUser.setAuthProvider(AuthProvider.valueOf("GOOGLE")); // ✅ Correct
+            newUser.setPassword(""); // No password for OAuth users
+            newUser.setAuthProvider(AuthProvider.GOOGLE);
 
-
-            // Set default role as EMPLOYEE
             Role defaultRole = roleRepository.findByName("EMPLOYEE")
-                    .orElseThrow(() -> new RuntimeException("Default role not found"));
+                    .orElseThrow(() -> new RuntimeException("Default role 'EMPLOYEE' not found"));
 
             newUser.setRole(defaultRole);
-
             userRepository.save(newUser);
+        } else {
+            // Optionally, update role if missing or authProvider not GOOGLE
+            User existingUser = optionalUser.get();
+            if (existingUser.getRole() == null) {
+                Role defaultRole = roleRepository.findByName("EMPLOYEE")
+                        .orElseThrow(() -> new RuntimeException("Default role 'EMPLOYEE' not found"));
+                existingUser.setRole(defaultRole);
+                userRepository.save(existingUser);
+            }
+            if (existingUser.getAuthProvider() == null) {
+                existingUser.setAuthProvider(AuthProvider.GOOGLE);
+                userRepository.save(existingUser);
+            }
         }
 
-        // Redirect to dashboard after login
         response.sendRedirect("/dashboard");
     }
 }
