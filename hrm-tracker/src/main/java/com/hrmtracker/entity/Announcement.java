@@ -1,5 +1,6 @@
 package com.hrmtracker.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,8 +22,6 @@ public class Announcement {
     @Column(length = 1000)
     private String content;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
-
-    @ManyToOne
-    private User createdBy;
 }

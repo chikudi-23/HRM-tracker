@@ -50,7 +50,6 @@ public class DataInitializer implements CommandLineRunner {
                                 .title("System Maintenance")
                                 .content("System will be down tonight from 11 PM to 1 AM.")
                                 .createdAt(LocalDateTime.now())
-                                .createdBy(adminUser)
                                 .build()
                 );
 
@@ -59,7 +58,6 @@ public class DataInitializer implements CommandLineRunner {
                                 .title("New HR Policies")
                                 .content("Please review the updated HR policies effective from next month.")
                                 .createdAt(LocalDateTime.now())
-                                .createdBy(adminUser)
                                 .build()
                 );
             }

@@ -5,56 +5,42 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="68171dfc-6971-46c0-b34a-f188354788d6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/config/AsyncConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/config/RabbitMQConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/controller/CustomErrorController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/controller/ProfileController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/dto/DashboardStatsDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/dto/EmployeeDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/entity/Announcement.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/entity/Attendance.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/entity/AuditLog.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/entity/FileUploadMessage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/entity/Leave.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/entity/LeaveStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/repository/AnnouncementRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/repository/AttendanceRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/repository/AuditLogRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/repository/LeaveRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/security/CustomOAuth2UserService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/service/AuditLogService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/service/DashboardService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/service/FileUploadConsumer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/service/impl/DashboardServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/audit-logs.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/error.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/profile-employee.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/profile-hr.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/upload.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/dto/AuditLogDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/config/DataInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/config/DataInitializer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/config/WebConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/controller/AuthController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/controller/DashboardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/controller/DashboardController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/controller/HomeController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/dto/UserRegistrationDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/dto/UserRegistrationDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/controller/ProfileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/controller/ProfileController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/entity/Announcement.java" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/entity/Announcement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/entity/Attendance.java" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/entity/Attendance.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/entity/AuditLog.java" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/entity/AuditLog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/entity/Leave.java" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/entity/Leave.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/entity/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/repository/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/security/CustomOAuth2SuccessHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/security/CustomOAuth2SuccessHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/service/CustomUserDetailsService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/service/DepartmentService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/service/UserService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/service/impl/DepartmentServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/service/impl/UserServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/static/css/style.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/dashboard-admin.html" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/dashboard-admin.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/dashboard-employee.html" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/dashboard-employee.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/dashboard-hr.html" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/dashboard-hr.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/register.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/repository/AttendanceRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/repository/AttendanceRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/repository/LeaveRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/repository/LeaveRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/service/AuditLogService.java" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/service/AuditLogService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/service/impl/DashboardServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/service/impl/DashboardServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/audit-logs.html" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/audit-logs.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/dashboard-admin.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/dashboard-employee.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/dashboard-hr.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/error.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/login.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/profile-employee.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/profile-hr.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/register.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/upload.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uploads/final/id_proofs/1b442544-e120-4bc9-841b-d4ff6b190bdb_1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uploads/final/id_proofs/5bea231f-058e-40e9-ada8-a31a4ccbc45a_4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uploads/final/id_proofs/b4df21db-5b09-4d64-9b39-b21982a820f4_4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uploads/final/id_proofs/e5d0f492-3f62-4370-b8d2-7ed0affb3117_1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uploads/final/resumes/52373344-dc06-4d78-9e20-5c204006196d_2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uploads/final/resumes/7ca96508-afe3-4761-9043-81bcb41a34f8_3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uploads/final/resumes/815bc05f-ac79-4f5c-b489-926013a805fc_ideaIC-2025.1.1.1.exe" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,8 +50,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="HTML File" />
         <option value="Class" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -108,6 +94,15 @@
     "last_opened_file_path": "C:/Users/SnehaVishwakarma/Videos/hrm-tracker 2 merge till dashboard"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\SnehaVishwakarma\Videos\hrm-tracker 2 merge till dashboard\hrm-tracker\src\main\resources\templates" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\SnehaVishwakarma\Videos\hrm-tracker 2 merge till dashboard\hrm-tracker\src\main\resources\static\uploads\images" />
+      <recent name="C:\Users\SnehaVishwakarma\Videos\hrm-tracker 2 merge till dashboard\hrm-tracker\src\main\resources\static\" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="HrmTrackerApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.hrmtracker.HrmTrackerApplication" />

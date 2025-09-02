@@ -2,10 +2,13 @@ package com.hrmtracker.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -17,8 +20,15 @@ public class Attendance {
 
     private LocalDate date;
 
-    private boolean present;
+    private LocalTime checkInTime;   // Renamed from checkIn
+    private LocalTime checkOutTime;  // Renamed from checkOut
+    private Long totalHours;         // Hours worked
+
+    private String status;           // Present / Absent / Leave
+
+    private Boolean leave1;           // Leave flag: true if on leave
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 }

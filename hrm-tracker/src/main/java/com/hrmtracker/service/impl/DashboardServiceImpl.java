@@ -4,9 +4,7 @@ import com.hrmtracker.dto.DashboardStatsDTO;
 import com.hrmtracker.dto.EmployeeDTO;
 import com.hrmtracker.dto.HrDto;
 import com.hrmtracker.dto.UserRegistrationDto;
-import com.hrmtracker.entity.AuthProvider;
-import com.hrmtracker.entity.Department;
-import com.hrmtracker.entity.Role;
+import com.hrmtracker.entity.*;
 import com.hrmtracker.entity.User;
 import com.hrmtracker.repository.*;
 import com.hrmtracker.service.DashboardService;
@@ -15,10 +13,13 @@ import org.springframework.security.core.userdetails.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,10 +42,9 @@ public class DashboardServiceImpl implements DashboardService, UserDetailsServic
                 .totalEmployees(userRepository.countByRoleName("EMPLOYEE"))
                 .totalDepartments(departmentRepository.count())
                 .totalHRs(userRepository.countByRoleName("HR"))
-                .pendingLeaves(leaveRepository.countByStatus("PENDING"))
-                .approvedLeaves(leaveRepository.countByStatus("APPROVED"))
-                .rejectedLeaves(leaveRepository.countByStatus("REJECTED"))
-                .totalAttendanceToday(attendanceRepository.countByDate(LocalDate.now()))
+                .pendingLeaves(leaveRepository.countByStatus(LeaveStatus.PENDING))
+                .approvedLeaves(leaveRepository.countByStatus(LeaveStatus.APPROVED))
+                .rejectedLeaves(leaveRepository.countByStatus(LeaveStatus.REJECTED))
                 .totalAnnouncements(announcementRepository.count())
                 .build();
     }
@@ -53,10 +53,9 @@ public class DashboardServiceImpl implements DashboardService, UserDetailsServic
     public DashboardStatsDTO getHRDashboardStats() {
         return DashboardStatsDTO.builder()
                 .totalEmployees(userRepository.countByRoleName("EMPLOYEE"))
-                .pendingLeaves(leaveRepository.countByStatus("PENDING"))
-                .approvedLeaves(leaveRepository.countByStatus("APPROVED"))
-                .rejectedLeaves(leaveRepository.countByStatus("REJECTED"))
-                .totalAttendanceToday(attendanceRepository.countByDate(LocalDate.now()))
+                .pendingLeaves(leaveRepository.countByStatus(LeaveStatus.PENDING))
+                .approvedLeaves(leaveRepository.countByStatus(LeaveStatus.APPROVED))
+                .rejectedLeaves(leaveRepository.countByStatus(LeaveStatus.REJECTED))
                 .totalAnnouncements(announcementRepository.count())
                 .build();
     }
@@ -64,7 +63,6 @@ public class DashboardServiceImpl implements DashboardService, UserDetailsServic
     @Override
     public DashboardStatsDTO getEmployeeDashboardStats(String email) {
         return DashboardStatsDTO.builder()
-                .totalAttendanceToday(attendanceRepository.countByDate(LocalDate.now()))
                 .totalAnnouncements(announcementRepository.count())
                 .build();
     }
@@ -225,4 +223,89 @@ public class DashboardServiceImpl implements DashboardService, UserDetailsServic
                 Collections.singleton(new SimpleGrantedAuthority("ROLE_" + user.getRole().getName()))
         );
     }
+// ==================== Attendance Methods ====================
+
+    public Attendance checkIn(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        LocalDate today = LocalDate.now();
+        Attendance attendance = attendanceRepository.findByUserAndDate(user, today);
+
+        if (attendance == null) {
+            attendance = Attendance.builder()
+                    .user(user)
+                    .date(today)
+                    .checkInTime(LocalTime.now())
+                    .status("Present")
+                    .leave1(false)
+                    .build();
+        } else {
+            // Prevent duplicate check-ins
+            if (attendance.getCheckInTime() == null) {
+                attendance.setCheckInTime(LocalTime.now());
+                attendance.setStatus("Present");
+            }
+        }
+
+        return attendanceRepository.save(attendance);
+    }
+
+    public Attendance checkOut(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        LocalDate today = LocalDate.now();
+        Attendance attendance = attendanceRepository.findByUserAndDate(user, today);
+
+        if (attendance == null) {
+            throw new RuntimeException("You must check in before checking out.");
+        }
+
+        if (attendance.getCheckInTime() == null) {
+            throw new RuntimeException("Check-in time missing. Cannot calculate working hours.");
+        }
+
+        if (attendance.getCheckOutTime() == null) {
+            attendance.setCheckOutTime(LocalTime.now());
+
+            long hours = java.time.Duration.between(
+                    attendance.getCheckInTime(), attendance.getCheckOutTime()).toHours();
+
+            attendance.setTotalHours(hours);
+        }
+
+        return attendanceRepository.save(attendance);
+    }
+
+    public List<Map<String, Object>> getAttendanceForCalendar(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<Attendance> records = attendanceRepository.findByUser(user);
+
+        return records.stream().map(a -> {
+            Map<String, Object> map = new HashMap<>();
+
+            String status = a.getLeave1() != null && a.getLeave1() ? "Leave" :
+                    a.getCheckInTime() != null ? "Present" : "Absent";
+
+            map.put("title", status.equals("Present")
+                    ? "Worked: " + (a.getTotalHours() != null ? a.getTotalHours() : 0) + " hrs"
+                    : status);
+            map.put("start", a.getDate().toString());
+
+            map.put("color", switch (status) {
+                case "Present" -> "green";
+                case "Leave" -> "yellow";
+                default -> "red";
+            });
+
+            map.put("status", status);
+            map.put("hours", a.getTotalHours() != null ? a.getTotalHours() : 0);
+
+            return map;
+        }).collect(Collectors.toList());
+    }
+
 }

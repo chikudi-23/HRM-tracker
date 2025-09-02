@@ -24,8 +24,6 @@ public class AuditLogService {
         log.setEntity(entity);
         log.setUsername(performedBy);
         log.setTimestamp(LocalDateTime.now());
-        log.setOldValue(oldValue);
-        log.setNewValue(newValue);
 
         auditLogRepository.save(log);
     }

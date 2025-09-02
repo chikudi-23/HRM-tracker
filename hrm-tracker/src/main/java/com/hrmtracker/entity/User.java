@@ -46,6 +46,10 @@ public class User {
     @Column(name = "resume_path")
     private String resumePath;
 
+    @Column(name = "profile_pic_path")
+    private String profilePicPath;
+
+
 
     // Only for Admin, HR, Employee
     //private LocalDate joiningDate;

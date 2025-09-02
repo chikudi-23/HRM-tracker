@@ -1,10 +1,11 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8" />
   <title>Employee Profile</title>
   <link rel="stylesheet" th:href="@{/css/style.css}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; }
@@ -31,67 +32,64 @@
     .file-actions { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
     .file-actions a { color: #0074D9; font-size: 18px; text-decoration: none; }
     .file-actions a:hover { color: #005fa3; }
-    #loader-overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(255,255,255,0.7);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      transition: opacity 0.3s;
-    }
+    #loader-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(255,255,255,0.7); display: flex; align-items: center; justify-content: center; z-index: 9999; transition: opacity 0.3s; }
     #loader-overlay.hidden { opacity: 0; pointer-events: none; }
-    .spinner {
-      border: 8px solid #f3f3f3;
-      border-top: 8px solid #0074D9;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      animation: spin 1s linear infinite;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg);}
-      100% { transform: rotate(360deg);}
-    }
-    #upload-progress-bar {
-      display:none;
-      position:fixed;
-      right:30px;
-      bottom:30px;
-      width:220px;
-      height:38px;
-      background:#fff;
-      border-radius:8px;
-      box-shadow:0 2px 8px rgba(0,0,0,0.12);
-      z-index:9999;
-      border: 1px solid #0074D9;
-    }
-    #upload-progress-inner {
-      height:100%;
-      width:0;
-      background:#4caf50;
-      border-radius:8px;
-      text-align:center;
-      line-height:38px;
-      color:#fff;
-      font-weight:bold;
-      transition:width 0.3s;
-    }
-    .uploaded-file-name {
-      font-size: 15px;
-      color: #0074D9;
-      margin-top: 8px;
-      margin-bottom: 0;
-      font-weight: bold;
-      word-break: break-all;
-    }
+    .spinner { border: 8px solid #f3f3f3; border-top: 8px solid #0074D9; border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; }
+    @keyframes spin { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
+    #upload-progress-bar { display:none; position:fixed; right:30px; bottom:30px; width:220px; height:38px; background:#fff; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.12); z-index:9999; border: 1px solid #0074D9; }
+    #upload-progress-inner { height:100%; width:0; background:#4caf50; border-radius:8px; text-align:center; line-height:38px; color:#fff; font-weight:bold; transition:width 0.3s; }
+    .uploaded-file-name { font-size: 15px; color: #0074D9; margin-top: 8px; margin-bottom: 0; font-weight: bold; word-break: break-all; }
+
+    /* Profile Image Box */
+    .profile-box { width: 150px; height: 150px; border: 2px dashed #ccc; border-radius: 10px; position: relative; overflow: hidden; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; background: #f9f9f9; }
+    .profile-box img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+    .profile-box input { display: none; }
+    .profile-actions {
+  position: absolute;
+  bottom: 5px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between; /* icons go left & right */
+  padding: 0 5px;
+}
+
+.upload-btn, .delete-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  border: none;
+}
+
+.upload-btn {
+  background: #0074D9;
+  color: #fff;
+}
+.upload-btn:hover {
+  background: #005fa3;
+}
+
+.delete-btn {
+  background: #ff4b2b;
+  color: #fff;
+}
+.delete-btn:hover {
+  background: #e03a1d;
+}
+
   </style>
 </head>
+
 <body>
 <div id="loader-overlay" class="hidden">
   <div class="spinner"></div>
 </div>
+
 <div class="dashboard-container">
   <div class="sidebar">
     <h2>Employee Panel</h2>
@@ -101,6 +99,7 @@
       <li><a th:href="@{/employee/tasks}">Tasks</a></li>
     </ul>
   </div>
+
   <div class="main-content">
     <div class="topbar">
       <h1>Update Profile</h1>
@@ -109,124 +108,223 @@
       </form>
       <button onclick="document.getElementById('logoutForm').submit();" class="logout-btn">Logout</button>
     </div>
-  <div id="success-message" class="success-message" style="display:none;"></div>
-  <div th:if="${successMessage}" class="success-message" th:text="${successMessage}"></div>
+
+    <div id="success-message" class="success-message" style="display:none;"></div>
+    <div th:if="${successMessage}" class="success-message" th:text="${successMessage}"></div>
+
+    <div class="profile-box">
+      <img id="profile-preview"
+           th:src="${user.profilePicPath != null} ? @{/uploads/{file}(file=${user.profilePicPath})} : @{/images/default-user.png}"
+           alt="Profile Image">
+
+      <!-- Action buttons wrapper -->
+      <div class="profile-actions">
+        <!-- Delete button -->
+        <button type="button" onclick="deleteProfileImage()" class="delete-btn">
+          <i class="fa fa-trash"></i>
+        </button>
+
+        <!-- Upload button -->
+        <input type="file" id="profilePicInput" name="profilePic" accept="image/*" onchange="uploadProfileImage(event)">
+        <label for="profilePicInput" class="upload-btn"><i class="fa fa-plus"></i></label>
+      </div>
+    </div>
+
     <div class="form-container">
-      <form th:action="@{/employee/profile/update}" method="post" onsubmit="showLoader()">
+      <form th:action="@{/employee/profile/update}" method="post" enctype="multipart/form-data" onsubmit="showLoader()">
         <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
         <div class="form-group">
           <label>Full Name</label>
           <input type="text" name="fullName" th:value="${user.fullName}" required />
         </div>
+
         <div class="form-group">
           <label>Email</label>
           <input type="email" name="email" th:value="${user.email}" required />
         </div>
+
         <div class="form-group">
           <label>Phone</label>
           <input type="text" name="phone" th:value="${user.phone}" />
         </div>
+
         <div class="form-group">
           <label>Password (Leave blank if not changing)</label>
           <input type="password" name="password" placeholder="Enter new password" />
         </div>
+
         <div class="form-group">
           <label>Department</label>
           <select name="departmentId">
             <option value="">-- Select Department --</option>
-            <option th:each="dept : ${departments}"
-                    th:value="${dept.id}"
+            <option th:each="dept : ${departments}" th:value="${dept.id}"
                     th:selected="${user.department != null and dept.id == user.department.id}"
                     th:text="${dept.name}"></option>
           </select>
         </div>
+
         <button type="submit">Update Profile</button>
       </form>
     </div>
+
+    <!-- ID Proof Upload -->
     <div class="upload-section">
       <h3>Upload ID Proof</h3>
-      <form id="idProofUploadForm" enctype="multipart/form-data" class="file-upload-row" onsubmit="event.preventDefault(); startUploadXHR(this, 'idProof');">
+      <form id="idProofUploadForm" enctype="multipart/form-data" class="file-upload-row"
+            onsubmit="event.preventDefault(); startUploadXHR(this, 'idProof');">
         <input type="file" name="file" required onchange="showSelectedFileName(this, 'idProof')">
         <button type="submit">Upload</button>
       </form>
+
       <div th:if="${user.idProofPath != null}" class="file-actions">
-        <a th:href="${user.idProofPath}" target="_blank" title="View"><i class="fa fa-eye"></i></a>
+        <a th:href="@{'/uploads/' + ${user.idProofPath}}" target="_blank" title="View"><i class="fa fa-eye"></i></a>
       </div>
-  <p id="uploaded-idproof-name" class="uploaded-file-name" th:text="${user.idProofPath != null ? 'Uploaded: ' + #strings.substring(user.idProofPath, user.idProofPath.lastIndexOf('/') + 1) : ''}"></p>
+      <p id="uploaded-idproof-name" class="uploaded-file-name"
+         th:text="${user.idProofPath != null ? 'Uploaded: ' + #strings.substring(user.idProofPath, user.idProofPath.lastIndexOf('/') + 1) : ''}">
+      </p>
     </div>
+
+    <!-- Resume Upload -->
     <div class="upload-section">
       <h3>Upload Resume</h3>
-      <form id="resumeUploadForm" enctype="multipart/form-data" class="file-upload-row" onsubmit="event.preventDefault(); startUploadXHR(this, 'resume');">
+      <form id="resumeUploadForm" enctype="multipart/form-data" class="file-upload-row"
+            onsubmit="event.preventDefault(); startUploadXHR(this, 'resume');">
         <input type="file" name="file" required onchange="showSelectedFileName(this, 'resume')">
         <button type="submit">Upload</button>
       </form>
+
       <div th:if="${user.resumePath != null}" class="file-actions">
-        <a th:href="${user.resumePath}" target="_blank" title="View"><i class="fa fa-eye"></i></a>
+        <a th:href="@{'/uploads/' + ${user.resumePath}}" target="_blank" title="View"><i class="fa fa-eye"></i></a>
       </div>
-  <p id="uploaded-resume-name" class="uploaded-file-name" th:text="${user.resumePath != null ? 'Uploaded: ' + #strings.substring(user.resumePath, user.resumePath.lastIndexOf('/') + 1) : ''}"></p>
+      <p id="uploaded-resume-name" class="uploaded-file-name"
+         th:text="${user.resumePath != null ? 'Uploaded: ' + #strings.substring(user.resumePath, user.resumePath.lastIndexOf('/') + 1) : ''}">
+      </p>
     </div>
+
+    <!-- Progress bar -->
     <div id="upload-progress-bar">
       <div id="upload-progress-inner">0%</div>
     </div>
+
+    <!-- JS -->
     <script>
+      function previewProfileImage(event) {
+    const reader = new FileReader();
+    reader.onload = function() {
+        const img = document.getElementById('profile-preview');
+        if (img) img.src = reader.result;
+    }
+    reader.readAsDataURL(event.target.files[0]);
+}
+function uploadProfileImage(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  fetch('/profile/upload-pic', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      document.getElementById('profile-preview').src = '/' + data.path;
+      showSuccessMessage("Profile image updated!");
+    } else {
+      alert("Failed to upload profile picture.");
+    }
+  })
+  .catch(err => {
+    console.error(err);
+    alert("Error uploading profile picture.");
+  });
+}
+
+function deleteProfileImage() {
+  fetch('/profile/delete-pic', { method: 'POST' })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        document.getElementById('profile-preview').src = '/images/default-user.png';
+        showSuccessMessage("Profile image removed!");
+      } else {
+        alert("Failed to delete profile picture.");
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Error deleting profile picture.");
+    });
+}
+
       function showLoader() {
         document.getElementById('loader-overlay').classList.remove('hidden');
       }
+
       function hideLoader() {
         document.getElementById('loader-overlay').classList.add('hidden');
       }
+
       window.addEventListener('DOMContentLoaded', function() {
         hideLoader();
         document.getElementById('logoutForm').addEventListener('submit', showLoader);
+
         let uploadInfo = JSON.parse(localStorage.getItem('uploadInfo') || '{}');
         if (uploadInfo && uploadInfo.uploading && uploadInfo.jobId && uploadInfo.type && uploadInfo.fileName) {
           showProgressBar(uploadInfo.jobId, uploadInfo.type, uploadInfo.fileName, true);
         }
       });
+
       function showSelectedFileName(input, type) {
         const file = input.files[0];
         if (file) setUploadedFileName(type, file.name);
       }
+
       function startUploadXHR(form, type) {
         const fileInput = form.querySelector('input[type="file"]');
         const file = fileInput.files[0];
         if (!file) return;
+
         const formData = new FormData();
         formData.append("file", file);
+
         let endpoint = "/upload";
         if (type === "idProof") endpoint = "/profile/upload-id";
         if (type === "resume") endpoint = "/profile/upload-resume";
+
         const bar = document.getElementById("upload-progress-bar");
         const inner = document.getElementById("upload-progress-inner");
         bar.style.display = "block";
         inner.style.width = "1%";
         inner.textContent = "1%";
+
         setUploadedFileName(type, file.name);
-        localStorage.setItem('uploadInfo', JSON.stringify({
-          uploading: true,
-          jobId: null,
-          type: type,
-          fileName: file.name
-        }));
+
+        localStorage.setItem('uploadInfo', JSON.stringify({ uploading: true, jobId: null, type: type, fileName: file.name }));
+
         const xhr = new XMLHttpRequest();
         xhr.open("POST", endpoint, true);
+
         xhr.upload.onprogress = function(e) {
           if (e.lengthComputable) {
             let percent = Math.round((e.loaded / e.total) * 100);
             inner.style.width = percent + "%";
             inner.textContent = percent + "%";
+
             let info = JSON.parse(localStorage.getItem('uploadInfo') || '{}');
             info.percent = percent;
             localStorage.setItem('uploadInfo', JSON.stringify(info));
           }
         };
+
         xhr.onload = function() {
           inner.style.width = "100%";
           inner.textContent = "100%";
-          setTimeout(() => {
-            bar.style.display = "none";
-            showSuccessMessage('File uploaded successfully!');
-          }, 1200);
+          setTimeout(() => { bar.style.display = "none"; showSuccessMessage('File uploaded successfully!'); }, 1200);
+
           let jobId = xhr.responseText;
           let info = JSON.parse(localStorage.getItem('uploadInfo') || '{}');
           info.jobId = jobId;
@@ -234,25 +332,28 @@
           info.uploading = false;
           localStorage.setItem('uploadInfo', JSON.stringify(info));
         };
+
         xhr.onerror = function() {
           inner.textContent = "Error";
           bar.style.background = "#ff4b2b";
         };
+
         xhr.send(formData);
       }
+
       function showSuccessMessage(msg) {
         var el = document.getElementById('success-message');
         el.textContent = msg;
         el.style.display = 'block';
-        setTimeout(function() {
-          el.style.display = 'none';
-        }, 3000);
+        setTimeout(function() { el.style.display = 'none'; }, 3000);
       }
+
       function showProgressBar(jobId, type, fileName, restore) {
         const bar = document.getElementById("upload-progress-bar");
         const inner = document.getElementById("upload-progress-inner");
         bar.style.display = "block";
         setUploadedFileName(type, fileName);
+
         let interval = setInterval(() => {
           fetch(`/upload/progress/${jobId}`)
             .then(res => res.json())
@@ -261,9 +362,11 @@
               if (percent < 1) percent = 1;
               inner.style.width = percent + "%";
               inner.textContent = percent + "%";
+
               let info = JSON.parse(localStorage.getItem('uploadInfo') || '{}');
               info.percent = percent;
               localStorage.setItem('uploadInfo', JSON.stringify(info));
+
               if (percent >= 100 || data.status === "COMPLETED" || data.status === "FAILED") {
                 clearInterval(interval);
                 inner.style.width = "100%";
@@ -274,8 +377,10 @@
             })
             .catch(() => {});
         }, 1000);
+
         if (restore) setUploadedFileName(type, fileName);
       }
+
       function setUploadedFileName(type, fileName) {
         if (type === "idProof") {
           document.getElementById("uploaded-idproof-name").textContent = fileName ? "Uploaded: " + fileName : "";

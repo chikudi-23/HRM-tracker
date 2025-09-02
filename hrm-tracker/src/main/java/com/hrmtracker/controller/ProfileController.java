@@ -2,6 +2,7 @@ package com.hrmtracker.controller;
 
 import com.hrmtracker.entity.FileUploadMessage;
 import com.hrmtracker.entity.User;
+import com.hrmtracker.repository.UserRepository;
 import com.hrmtracker.service.DashboardService;
 import com.hrmtracker.service.FileUploadConsumer;
 import lombok.RequiredArgsConstructor;
@@ -15,13 +16,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @Controller
@@ -30,6 +36,7 @@ public class ProfileController {
 
     private final DashboardService dashboardService;
     private final FileUploadConsumer fileUploadConsumer;
+    private final UserRepository userRepository;
 
     @Value("${file.final-dir}")
     private String fileBasePath;
@@ -75,6 +82,60 @@ public class ProfileController {
         User user = dashboardService.findByEmail(principal.getName());
         dashboardService.updateUserProfileFields(user.getEmail(), fullName, phone, password, departmentId);
         return getRedirectWithMessage(user.getRole().getName(), "Profile updated successfully!");
+    }
+
+    @PostMapping("/profile/upload-pic")
+    @ResponseBody
+    public Map<String, Object> uploadProfilePic(@RequestParam("file") MultipartFile file,
+                                                Principal principal) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            // Save file
+            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            Path uploadPath = Paths.get("uploads/");
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+            Path filePath = uploadPath.resolve(fileName);
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            // Update DB
+            User user = userRepository.findByEmail(principal.getName()).orElseThrow();
+            user.setProfilePicPath(fileName);
+            userRepository.save(user);
+
+            response.put("success", true);
+            response.put("path", "uploads/" + fileName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("success", false);
+        }
+        return response;
+    }
+
+    @PostMapping("/profile/delete-pic")
+    @ResponseBody
+    public Map<String, Object> deleteProfilePic(Principal principal) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            User user = userRepository.findByEmail(principal.getName()).orElseThrow();
+
+            // Optionally: delete old file from disk
+            if (user.getProfilePicPath() != null) {
+                Path oldFile = Paths.get("uploads/").resolve(user.getProfilePicPath());
+                Files.deleteIfExists(oldFile);
+            }
+
+            // Reset in DB
+            user.setProfilePicPath(null);
+            userRepository.save(user);
+
+            response.put("success", true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("success", false);
+        }
+        return response;
     }
 
     // ======================== FILE UPLOAD ========================

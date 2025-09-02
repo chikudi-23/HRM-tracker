@@ -1,15 +1,13 @@
 package com.hrmtracker.repository;
 
 import com.hrmtracker.entity.Attendance;
+import com.hrmtracker.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.List;
 
-@Repository
 public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
-
-    @Query("SELECT COUNT(a) FROM Attendance a WHERE a.date = :today")
-    long countByDate(LocalDate today);
+    List<Attendance> findByUser(User user);
+    Attendance findByUserAndDate(User user, LocalDate date);
 }

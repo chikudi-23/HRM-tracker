@@ -22,8 +22,9 @@ public class Leave {
 
     private LocalDate endDate;
 
-    private String status; // PENDING, APPROVED, REJECTED
-
     @ManyToOne
     private User user;
+
+    @Enumerated(EnumType.STRING)
+    private LeaveStatus status;
 }

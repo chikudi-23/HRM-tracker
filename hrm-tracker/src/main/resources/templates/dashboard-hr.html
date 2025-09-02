@@ -5,106 +5,75 @@
   <title>HR Dashboard</title>
   <link rel="stylesheet" th:href="@{/css/style.css}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet"/>
 
   <style>
-    /* Your existing styles (unchanged) */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; }
+    .dashboard-container { display: flex; min-height: 100vh; }
+    .sidebar { width: 250px; background: linear-gradient(to bottom, #001f3f, #0074D9); color: #fff; padding: 30px 20px; box-shadow: 2px 0 10px rgba(0,0,0,0.1); }
+    .sidebar h2 { font-size: 24px; margin-bottom: 30px; color: #7FDBFF; }
+    .sidebar ul { list-style: none; }
+    .sidebar ul li { margin: 20px 0; }
+    .sidebar ul li a { text-decoration: none; color: #ccefff; font-size: 16px; transition: all 0.3s ease; }
+    .sidebar ul li a:hover { color: #ffffff; padding-left: 8px; }
+
+    .main-content { flex: 1; padding: 30px; background-color: #ffffff; display: flex; flex-direction: column; min-height: 100vh; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+    .topbar h1 { font-size: 26px; color: #333; }
+    .logout-btn { background: linear-gradient(45deg, #ff4b2b, #ff416c); color: white; padding: 10px 18px; text-decoration: none; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; transition: 0.3s ease; }
+    .logout-btn:hover { background: linear-gradient(45deg, #e63e2e, #e03362); }
+
+
+    /* Dashboard Flex */
+    .dashboard-flex { display: flex; gap: 25px; align-items: flex-start; flex-wrap: wrap; }
+
+    /* Attendance Panel (Smaller, White Background) */
+    .attendance-panel {
+      flex: 0.8; padding: 20px; background: #ffffff;
+      color: #333; border-radius: 14px; box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+      display: flex; flex-direction: column; gap: 8px;
+      min-width: 250px; max-width: 300px;
+      align-items: center; /* Center contents */
     }
 
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f0f2f5;
+    /* Profile Image on Attendance Panel */
+    .attendance-profile-box { width: 100px; height: 100px; border-radius: 50%; overflow: hidden; margin-bottom: 15px; border: 2px solid #0074D9; }
+    .attendance-profile-box img { width: 100%; height: 100%; object-fit: cover; }
+
+   .attendance-panel p, .attendance-panel h2 {
+    text-align: left;   /* Left align all text */
+    width: 100%;
+    margin: 5px 0;
     }
 
-    .dashboard-container {
-      display: flex;
-      min-height: 100vh;
-    }
+    /* Attendance Buttons */
+        .attendance-btn {
+    margin-top: 10px;
+    padding: 12px 0;      /* Same height */
+    font-size: 16px;       /* Same font size */
+    width: 120px;          /* Fixed width for both */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s ease;
+}
 
-    /* Sidebar */
-    .sidebar {
-      width: 250px;
-      background: linear-gradient(to bottom, #001f3f, #0074D9);
-      color: #fff;
-      padding: 30px 20px;
-      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-    }
+  #checkin-btn { background: #ff4b2b; color: white; }
+#checkin-btn:disabled { background: white; color: #ff4b2b; border: 1px solid #ff4b2b; }
 
-    .sidebar h2 {
-      font-size: 24px;
-      margin-bottom: 30px;
-      color: #7FDBFF;
-    }
+#checkout-btn { background: #27ae60; color: white; }
+#checkout-btn:disabled { background: white; color: #27ae60; border: 1px solid #27ae60; }
 
-    .sidebar ul {
-      list-style: none;
-    }
 
-    .sidebar ul li {
-      margin: 20px 0;
-    }
-
-    .sidebar ul li a {
-      text-decoration: none;
-      color: #ccefff;
-      font-size: 16px;
-      transition: all 0.3s ease;
-    }
-
-    .sidebar ul li a:hover{
-      color: #ffffff;
-      padding-left: 8px;
-    }
-
-    /* Main Content */
-    .main-content {
-      flex: 1;
-      padding: 30px;
-      background-color: #ffffff;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 30px;
-    }
-
-    .topbar h1 {
-      font-size: 26px;
-      color: #333;
-    }
-
-    .logout-btn {
-      background: linear-gradient(45deg, #ff4b2b, #ff416c);
-      color: white;
-      padding: 10px 18px;
-      text-decoration: none;
-      border: none;
-      border-radius: 6px;
-      font-size: 14px;
-      cursor: pointer;
-      transition: 0.3s ease;
-    }
-
-    .logout-btn:hover {
-      background: linear-gradient(45deg, #e63e2e, #e03362);
-    }
-
-    /* Cards */
-    .cards-container {
+   .cards-container {
+      flex: 2;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 25px;
       margin-bottom: 30px;
     }
-
     .card {
       padding: 25px;
       border-radius: 14px;
@@ -114,143 +83,207 @@
       cursor: pointer;
       user-select: none;
     }
-
-    .card:hover {
-      transform: translateY(-5px);
-    }
-
-    /* Colorful Cards (Color Boxes) */
+    .card:hover { transform: translateY(-5px); }
     .card:nth-child(1) { background: linear-gradient(to right, #43cea2, #185a9d); }
     .card:nth-child(2) { background: linear-gradient(to right, #f7971e, #ffd200); }
     .card:nth-child(3) { background: linear-gradient(to right, #ff512f, #dd2476); }
     .card:nth-child(4) { background: linear-gradient(to right, #2193b0, #6dd5ed); }
-    .card:nth-child(5) { background: linear-gradient(to right, #00c6ff, #0072ff); }
-    .card:nth-child(6) { background: linear-gradient(to right, #f857a6, #ff5858); }
+    .card h2 { font-size: 24px; margin-bottom: 10px; }
 
-    .card h3 {
-      font-size: 18px;
-      margin-bottom: 10px;
+    #employee-details-section { display: none; margin-top: 20px; max-width: 1000px; margin-left: auto; margin-right: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 20px; border-radius: 10px; background-color: #fff; overflow-x: auto; position: relative; }
+    #employee-details-section h2 { text-align: center; margin-bottom: 20px; color: #333; }
+    #employees-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+    #employees-table th, #employees-table td { border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle; }
+    #employees-table th { background-color: #0074D9; color: white; white-space: nowrap; }
+    #employees-table tr:nth-child(even) { background-color: #f9f9f9; }
+    #employees-table tr:hover { background-color: #f1f1f1; }
+
+/* Calendar Section */
+    #announcement-details-section, #attendance-calendar-section {
+      display:none; margin-top:20px; width:100%; padding:20px;
+      border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.1);
+      background-color:#fff; position:relative;
     }
 
-    .card p {
-      font-size: 28px;
-      font-weight: bold;
+    #announcement-details-section h2, #attendance-calendar-section h2{ text-align: center; margin-bottom: 20px; color: #333; }
+    #calendar, #attendanceCalendar {
+      margin: 20px auto; width: 100% !important; min-height: 600px !important;
     }
-
-    /* Employee Details Section */
-    #employee-details-section {
+    #attendance-detail-section {
       display: none;
       margin-top: 20px;
-      max-width: 1000px;
-      margin-left: auto;
-      margin-right: auto;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      padding: 20px;
-      border-radius: 10px;
-      background-color: #fff;
-      overflow-x: auto;
+      padding: 25px;
+      border-radius: 12px;
+      background: #ffffff;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+      transition: all 0.3s ease-in-out;
     }
 
-    #employee-details-section h2 {
+    #attendance-detail-section h3 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: #333;
+      border-bottom: 2px solid #f0f0f0;
+      padding-bottom: 8px;
+    }
+    .horizontal-attendance {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px;
+      border: 1px solid #e5e5e5;
+      border-radius: 12px;
+      background: #ffffff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04);
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .date-column {
+      min-width: 120px;
       text-align: center;
-      margin-bottom: 20px;
+      margin-right: 20px;
+    }
+
+    .date-text {
+      font-weight: bold;
+      font-size: 16px;
+      color: #185a9d;
+    }
+
+    .day-text {
+      font-size: 14px;
+      color: #666;
+      margin-top: 4px;
+    }
+
+    .timeline-bar {
+      position: relative;
+      flex-grow: 1;
+      height: 6px;
+      background-color: #d0d0d0;
+      border-radius: 4px;
+      margin: 0 20px;
+    }
+
+    .start-time,
+    .end-time {
+      position: absolute;
+      top: -20px;
+      font-size: 13px;
+      font-weight: bold;
       color: #333;
     }
 
-    #employees-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 15px;
+    .start-time {
+      left: 0;
     }
 
-    #employees-table th, #employees-table td {
-      border: 1px solid #ddd;
-      padding: 10px;
-      text-align: left;
-      vertical-align: middle;
+    .end-time {
+      right: 0;
     }
 
-    #employees-table th {
-      background-color: #0074D9;
-      color: white;
-      white-space: nowrap;
-    }
-
-    #employees-table tr:nth-child(even) {
-      background-color: #f9f9f9;
-    }
-
-    #employees-table tr:hover {
-      background-color: #f1f1f1;
-    }
-
-    #employee-details-section button {
-      display: block;
-      margin: 0 auto;
-      padding: 8px 15px;
+    .worked-hours {
+      min-width: 120px;
+      text-align: right;
       font-size: 14px;
-      border: none;
-      border-radius: 6px;
-      background-color: #185a9d;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .attendance-status {
+      margin-top: 15px;
+      text-align: right;
+      font-size: 14px;
+      font-weight: bold;
+      color: #444;
+    }
+
+    .status-pill {
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 13px;
       color: white;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
+      margin-left: 6px;
     }
 
-    #employee-details-section button:hover {
-      background-color: #43cea2;
+    .status-pill.Present {
+      background-color: #27ae60;
     }
 
-    /* Document view icons */
-    .doc-link {
-      color: #0074D9;
-      font-size: 18px;
-      text-decoration: none;
+    .status-pill.Absent {
+      background-color: #e74c3c;
     }
 
-    .doc-link:hover {
-      color: #005fa3;
+    .status-pill.Leave {
+      background-color: #f39c12;
     }
 
-    /* Loader Styles */
-    #loader-overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(255,255,255,0.7);
+    .status-pill.Weekend,
+    .status-pill.Holiday {
+      background-color: #7f8c8d;
+    }
+/* Back Icon */
+    .back-btn {
+      position: absolute; top: 15px; left: 15px;
+      background: #185a9d; color: white; border: none;
+      border-radius: 50%; width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 18px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      transition: background 0.3s ease;
+    }
+    .back-btn:hover { background: #43cea2; }
+
+    .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:10000; }
+    .modal-content { background:#fff; padding:20px; border-radius:10px; width:400px; position:relative; }
+    .modal-content h3 { margin-bottom:10px; }
+    .modal-content input, .modal-content textarea { width:100%; margin:8px 0; padding:8px; border:1px solid #ccc; border-radius:6px; }
+    .modal-content button { margin-top:10px; padding:8px; border:none; border-radius:6px; cursor:pointer; }
+    .save-btn { background:#185a9d; color:#fff; }
+    .cancel-btn { background:#aaa; color:#fff; }
+    .delete-btn { background:#ff4b2b; color:#fff; }
+
+    /* Horizontal Legend */
+    .legend {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      margin-top: 20px;
+    }
+    .legend-item {
       display: flex;
       align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      transition: opacity 0.3s;
+      gap: 6px;
+      font-size: 14px;
+      color: #333;
     }
-    #loader-overlay.hidden {
-      opacity: 0;
-      pointer-events: none;
+    .legend-color {
+      width: 16px;
+      height: 16px;
+      border-radius: 3px;
     }
-    .spinner {
-      border: 8px solid #f3f3f3;
-      border-top: 8px solid #0074D9;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      animation: spin 1s linear infinite;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg);}
-      100% { transform: rotate(360deg);}
+    #timer { font-size: 24px; font-weight: bold; margin-top: 10px; }
+
+    #loader-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(255,255,255,0.7); display: flex; align-items: center; justify-content: center; z-index: 9999; transition: opacity 0.3s; }
+    #loader-overlay.hidden { opacity: 0; pointer-events: none; }
+    .spinner { border: 8px solid #f3f3f3; border-top: 8px solid #0074D9; border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; }
+    @keyframes spin { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
+
+    /* New styles for the no-data message */
+    .no-data-message {
+        text-align: center;
+        padding: 40px;
+        color: #666;
+        font-size: 18px;
     }
   </style>
 </head>
 <body>
-
-<!-- Loader overlay -->
-<div id="loader-overlay" class="hidden">
-  <div class="spinner"></div>
-</div>
+<div id="loader-overlay" class="hidden"><div class="spinner"></div></div>
 
 <div class="dashboard-container">
-
-  <!-- Sidebar -->
   <div class="sidebar">
     <h2>HR Panel</h2>
     <ul>
@@ -259,140 +292,159 @@
     </ul>
   </div>
 
-  <!-- Main Content -->
   <div class="main-content">
     <div class="topbar">
       <h1>Welcome, <span th:text="${user.fullName}">HR</span></h1>
-
-      <form id="logoutForm" th:action="@{/logout}" method="post" style="display:none;">
-        <input type="hidden"
-               th:if="${_csrf != null}"
-               th:name="${_csrf.parameterName}"
-               th:value="${_csrf.token}" />
+      <form id="logoutForm" action="/logout" method="post" style="display:inline;">
+        <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <button type="submit" class="logout-btn">Logout</button>
       </form>
-
-      <button onclick="document.getElementById('logoutForm').submit();" class="logout-btn">Logout</button>
     </div>
 
-    <!-- Cards container -->
-    <div class="cards-container" id="dashboard-section">
-      <div class="card" id="total-employees-card" title="Click to view all employees">
-        <h3>Total Employees</h3>
-        <p th:text="${dashboardStats.totalEmployees}">0</p>
+    <div class="dashboard-flex">
+      <div class="attendance-panel">
+        <div class="attendance-profile-box">
+          <img th:src="${user.profilePicPath != null} ? @{/uploads/{file}(file=${user.profilePicPath})} : @{/images/default-user.png}"
+               alt="">
+        </div>
+
+        <h2>Today's Attendance</h2>
+        <p><strong>Name:</strong> <span th:text="${user.fullName}">HR Name</span></p>
+        <p><strong>Department:</strong> <span th:text="${user.department.name}">Department Name</span></p>
+        <div id="timer">00:00:00</div>
+
+        <div style="display:flex; gap:10px;">
+          <button id="checkin-btn" class="attendance-btn">Check In</button>
+          <button id="checkout-btn" class="attendance-btn" disabled>Check Out</button>
+        </div>
       </div>
 
-      <div class="card yellow-gradient">
-        <h3>Pending Leaves</h3>
-        <p th:text="${dashboardStats.pendingLeaves}">0</p>
-      </div>
-
-      <div class="card pink-gradient">
-        <h3>Total Announcements</h3>
-        <p th:text="${dashboardStats.totalAnnouncements}">0</p>
-      </div>
-
-      <div class="card green-gradient">
-        <h3>Today's Attendance</h3>
-        <p th:text="${dashboardStats.totalAttendanceToday}">0</p>
-      </div>
-
-      <div class="card indigo-gradient">
-        <h3>Approved Leaves</h3>
-        <p th:text="${dashboardStats.approvedLeaves}">0</p>
-      </div>
-
-      <div class="card red-gradient">
-        <h3>Rejected Leaves</h3>
-        <p th:text="${dashboardStats.rejectedLeaves}">0</p>
+      <div class="cards-container" id="dashboard-section">
+        <div class="card" id="total-employees-card"><h2>Employees</h2></div>
+        <div class="card"><h2>Leaves</h2></div>
+        <div class="card" id="attendance-calendar-card"><h2>Attendance</h2></div>
+        <div class="card" id="total-announcements-card"><h2>Announcements</h2></div>
       </div>
     </div>
 
-    <!-- Employee Details Section -->
     <div id="employee-details-section">
+      <button class="back-btn" onclick="hideEmployeeDetails()">
+        <i class="fas fa-arrow-left"></i>
+      </button>
       <h2>Employees List</h2>
-      <table id="employees-table" border="1" cellpadding="10" cellspacing="0">
-        <thead>
-        <tr>
-          <th>Name</th><th>Email</th><th>Phone</th><th>Department</th><th>Auth Provider</th>
-          <th>ID Proof</th><th>Resume</th>
-        </tr>
-        </thead>
+      <table id="employees-table">
+        <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Department</th><th>Auth Provider</th><th>ID Proof</th><th>Resume</th></tr></thead>
         <tbody></tbody>
       </table>
-      <button onclick="hideEmployeeDetails()">Back</button>
+    </div>
+
+    <div id="announcement-details-section">
+      <button class="back-btn" onclick="backToDashboard()">
+        <i class="fas fa-arrow-left"></i>
+      </button>
+      <h2 style="text-align:center; margin-bottom:20px;">Announcements Calendar</h2>
+      <div id="calendar"></div>
+    </div>
+
+    <div id="attendance-calendar-section">
+      <button class="back-btn" onclick="backToDashboard()"><i class="fas fa-arrow-left"></i></button>
+      <h2>My Attendance Calendar</h2>
+
+      <div id="attendance-calendar-content">
+        <div id="attendanceCalendar"></div>
+        <div class="legend">
+          <div class="legend-item"><span class="legend-color" style="background: green;"></span> Present</div>
+          <div class="legend-item"><span class="legend-color" style="background: red;"></span> Absent</div>
+          <div class="legend-item"><span class="legend-color" style="background: yellow;"></span> Leave</div>
+        </div>
+      </div>
+
+      <div id="no-attendance-data-message" class="no-data-message" style="display: none;">
+        No attendance data found for this period.
+      </div>
+
+      <div id="attendance-detail-section">
+        <button class="back-btn" onclick="hideAttendanceDetails()"><i class="fas fa-arrow-left"></i></button>
+        <h3 id="attendance-detail-title">Attendance Details</h3>
+
+        <div class="horizontal-attendance">
+          <div class="date-column">
+            <div id="detail-date" class="date-text">--</div>
+            <div id="detail-day" class="day-text">--</div>
+          </div>
+
+          <div class="timeline-bar">
+            <div class="start-time" id="detail-checkin">--</div>
+            <div class="end-time" id="detail-checkout">--</div>
+          </div>
+
+          <div class="worked-hours">
+            <span id="detail-hours">0</span> Hrs Worked
+          </div>
+        </div>
+
+        <div class="attendance-status">
+          Status: <span id="detail-status" class="status-pill">--</span>
+        </div>
+      </div>
     </div>
   </div>
+</div>
 
+<div class="modal" id="announcementModal">
+  <div class="modal-content">
+    <h3 id="modal-title">Add Announcement</h3>
+    <input type="text" id="ann-title" placeholder="Title" />
+    <textarea id="ann-content" placeholder="Content"></textarea>
+    <div style="margin-top:10px; text-align:right;">
+      <button class="save-btn" onclick="saveAnnouncement()">Save</button>
+      <button class="delete-btn" id="deleteBtn" onclick="deleteAnnouncement()" style="display:none;">Delete</button>
+      <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
 </div>
 
 <script th:inline="javascript">
-  /*<![CDATA[*/
   var currentUserRole = /*[[${user.role.name}]]*/ 'GUEST';
-  /*]]>*/
 </script>
-
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
 <script>
-  // Helper function to safely build upload links without double "/uploads/"
+  let calendar;
+  let selectedDate = null;
+  let editingEvent = null;
+
+  function showLoader() { document.getElementById('loader-overlay').classList.remove('hidden'); }
+  function hideLoader() { document.getElementById('loader-overlay').classList.add('hidden'); }
+
   function getSafeUploadLink(path) {
     if (!path) return '';
     let cleanPath = path;
-
-    // Remove starting "/" if present
-    if (cleanPath.startsWith('/')) {
-      cleanPath = cleanPath.substring(1);
-    }
-
-    // Remove "uploads/" prefix if present
-    if (cleanPath.startsWith("uploads/")) {
-      cleanPath = cleanPath.substring("uploads/".length);
-    }
-
+    if (cleanPath.startsWith('/')) cleanPath = cleanPath.substring(1);
+    if (cleanPath.startsWith("uploads/")) cleanPath = cleanPath.substring("uploads/".length);
     return `/uploads/${cleanPath}`;
   }
 
-  // Show loader
-  function showLoader() {
-    document.getElementById('loader-overlay').classList.remove('hidden');
-  }
-  // Hide loader
-  function hideLoader() {
-    document.getElementById('loader-overlay').classList.add('hidden');
-  }
-
-  // Handle click on total employees card
+  // ---------------- Employees Section ----------------
   document.getElementById('total-employees-card').addEventListener('click', function(event) {
     event.preventDefault();
-
     showLoader();
-
     const tbody = document.querySelector('#employees-table tbody');
     tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Loading...</td></tr>';
 
     fetch('/employees')
-      .then(response => {
-        if (!response.ok) throw new Error('Network response was not OK');
-        return response.json();
-      })
+      .then(response => response.json())
       .then(data => {
         tbody.innerHTML = '';
         if (data.length === 0) {
           tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No employees found.</td></tr>';
         } else {
           data.forEach(emp => {
-            let idProofLink = '-';
-            let resumeLink = '-';
-
-            // Show document links only if current user is ADMIN or HR
+            let idProofLink = '-', resumeLink = '-';
             if (currentUserRole === 'ADMIN' || currentUserRole === 'HR') {
-              if (emp.idProofPath) {
-                idProofLink = `<a href="${getSafeUploadLink(emp.idProofPath)}" target="_blank" title="View ID Proof" class="doc-link"><i class="fa fa-eye"></i></a>`;
-              }
-              if (emp.resumePath) {
-                resumeLink = `<a href="${getSafeUploadLink(emp.resumePath)}" target="_blank" title="View Resume" class="doc-link"><i class="fa fa-eye"></i></a>`;
-              }
+              if (emp.idProofPath) idProofLink = `<a href="${getSafeUploadLink(emp.idProofPath)}" target="_blank"><i class="fa fa-eye"></i></a>`;
+              if (emp.resumePath) resumeLink = `<a href="${getSafeUploadLink(emp.resumePath)}" target="_blank"><i class="fa fa-eye"></i></a>`;
             }
-
-            const row = `
+            tbody.innerHTML += `
               <tr>
                 <td>${emp.name}</td>
                 <td>${emp.email}</td>
@@ -402,37 +454,302 @@
                 <td style="text-align:center;">${idProofLink}</td>
                 <td style="text-align:center;">${resumeLink}</td>
               </tr>`;
-            tbody.innerHTML += row;
           });
         }
-
-        // Show employee list and hide dashboard cards
         document.getElementById('employee-details-section').style.display = 'block';
+        document.querySelector('.attendance-panel').style.display = 'none';
         document.getElementById('dashboard-section').style.display = 'none';
-
         hideLoader();
       })
-      .catch(error => {
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:red;">Error loading employees.</td></tr>`;
-        console.error('Fetch error:', error);
-        hideLoader();
-      });
+      .catch(err => { console.error(err); hideLoader(); });
   });
 
-  // Hide employee list and show dashboard cards again
   function hideEmployeeDetails() {
     document.getElementById('employee-details-section').style.display = 'none';
+    document.querySelector('.attendance-panel').style.display = 'flex';
     document.getElementById('dashboard-section').style.display = 'grid';
   }
 
-  // Show loader on logout submit
-  window.addEventListener('DOMContentLoaded', function() {
-    hideLoader();
+  // ---------------- Announcements ----------------
+  function loadAnnouncements() {
+    showLoader();
+    fetch('/announcements')
+      .then(res => res.json())
+      .then(data => {
+        calendar.removeAllEvents();
+        data.forEach(a => {
+          calendar.addEvent({ id:a.id, title:a.title, start:a.createdAt, extendedProps:{content:a.content} });
+        });
+        hideLoader();
+      }).catch(err => { console.error(err); hideLoader(); });
+  }
 
-    document.getElementById('logoutForm').addEventListener('submit', function() {
-      showLoader();
-    });
+  function openModal(isEdit=false, event=null, dateStr=null) {
+    const modal = document.getElementById('announcementModal');
+    modal.style.display = 'flex';
+    document.getElementById('ann-title').value = isEdit ? event.title : '';
+    document.getElementById('ann-content').value = isEdit ? event.extendedProps.content : '';
+    document.getElementById('modal-title').innerText = isEdit ? "Edit Announcement" : "Add Announcement";
+    document.getElementById('deleteBtn').style.display = isEdit ? "inline-block" : "none";
+    selectedDate = isEdit ? event.startStr : dateStr;
+    editingEvent = event;
+  }
+
+  function closeModal() { document.getElementById('announcementModal').style.display='none'; editingEvent=null; }
+
+  function saveAnnouncement() {
+    const title=document.getElementById('ann-title').value.trim();
+    const content=document.getElementById('ann-content').value.trim();
+    if(!title||!content){alert("Please enter Title & Content");return;}
+    if(!selectedDate){alert("No date selected!");return;}
+    const now=new Date();
+    const timeStr=now.toTimeString().split(' ')[0];
+    const payload={title,content,createdAt:selectedDate+"T"+timeStr};
+    if(editingEvent){
+      fetch('/announcements/'+editingEvent.id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
+        .then(()=>{loadAnnouncements();closeModal();});
+    }else{
+      fetch('/announcements',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
+        .then(()=>{loadAnnouncements();closeModal();});
+    }
+  }
+
+  function deleteAnnouncement() {
+    if(!editingEvent) return;
+    if(!confirm("Delete this announcement?")) return;
+    fetch('/announcements/'+editingEvent.id,{method:'DELETE'}).then(()=>{loadAnnouncements();closeModal();});
+  }
+
+  document.getElementById('total-announcements-card').addEventListener('click', () => {
+    document.getElementById('dashboard-section').style.display='none';
+    document.querySelector('.attendance-panel').style.display = 'none';
+    document.getElementById('announcement-details-section').style.display='block';
+    if (!calendar) {
+      calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+        initialView:'dayGridMonth',
+        selectable:true,
+        dateClick: function(info){ if(currentUserRole==='ADMIN'||currentUserRole==='HR'){openModal(false,null,info.dateStr);} },
+        eventClick: function(info){
+          if(currentUserRole==='ADMIN'||currentUserRole==='HR'){openModal(true,info.event,null);}
+          else{ alert("Title: "+info.event.title+"\nContent: "+info.event.extendedProps.content); }
+        }
+      });
+      calendar.render();
+    }
+    loadAnnouncements();
   });
+
+  // ✅ FIXED backToDashboard: hides both announcement & attendance sections
+  function backToDashboard() {
+    document.getElementById('announcement-details-section').style.display = 'none';
+    document.getElementById('attendance-calendar-section').style.display = 'none';
+    document.querySelector('.attendance-panel').style.display = 'flex';
+    document.getElementById('dashboard-section').style.display = 'grid';
+
+    // ✅ Clear attendanceGraph (avoid sticking below dashboard)
+    let graphContainer = document.getElementById('attendanceGraph');
+    if (graphContainer) graphContainer.innerHTML = "";
+  }
+
+  window.onclick=function(e){ if(e.target.classList.contains('modal')) closeModal(); };
+
+  // ---------------- Attendance Timer + Buttons ----------------
+   let checkinTime = null, timerInterval = null;
+  const checkinBtn = document.getElementById('checkin-btn');
+  const checkoutBtn = document.getElementById('checkout-btn');
+  const timerDisplay = document.getElementById('timer');
+
+  function formatTime(seconds) {
+    const hours = String(Math.floor(seconds / 3600)).padStart(2, '0');
+    const minutes = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
+    const secs = String(seconds % 60).padStart(2, '0');
+    return `${hours}:${minutes}:${secs}`;
+  }
+
+  function startTimer() {
+    timerInterval = setInterval(() => {
+      const now = new Date();
+      const diff = Math.floor((now - checkinTime) / 1000);
+      timerDisplay.textContent = formatTime(diff);
+      if (diff === 8 * 3600) alert("8 hours complete! You can check out now.");
+    }, 1000);
+  }
+
+  // Restore checkin from localStorage
+  window.addEventListener("load", () => {
+    const storedCheckin = localStorage.getItem("checkinTime");
+    const checkedOut = localStorage.getItem("checkedOut");
+
+    if (storedCheckin && !checkedOut) {
+      checkinTime = new Date(storedCheckin);
+      checkinBtn.disabled = true;
+      checkoutBtn.disabled = false;
+      startTimer();
+    } else {
+      timerDisplay.textContent = "00:00:00";
+      checkinBtn.disabled = false;
+      checkoutBtn.disabled = true;
+    }
+  });
+
+  checkinBtn.addEventListener('click', () => {
+    checkinTime = new Date();
+    localStorage.setItem("checkinTime", checkinTime.toISOString());
+    localStorage.removeItem("checkedOut"); // Ensure checkedOut is removed on check-in
+
+    checkinBtn.disabled = true;
+    checkoutBtn.disabled = false;
+    startTimer();
+
+    fetch('/attendance/checkin', { method: 'POST' }).catch(err => console.error(err));
+  });
+
+  checkoutBtn.addEventListener('click', () => {
+    clearInterval(timerInterval);
+    const workedSeconds = Math.floor((new Date() - checkinTime) / 1000);
+    timerDisplay.textContent = formatTime(workedSeconds);
+
+    checkoutBtn.disabled = true;
+    localStorage.setItem("checkedOut", "true"); // Mark as checked out
+
+    fetch('/attendance/checkout', { method: 'POST' }).catch(err => console.error(err));
+  });
+
+  function scheduleMidnightReset() {
+    const now = new Date();
+    const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0);
+    const msUntilMidnight = midnight.getTime() - now.getTime();
+
+    setTimeout(() => {
+      timerDisplay.textContent = "00:00:00";
+      checkinBtn.disabled = false;
+      checkoutBtn.disabled = true;
+      checkinTime = null;
+      clearInterval(timerInterval); // Clear interval to prevent multiple timers
+      timerInterval = null;
+      localStorage.removeItem("checkinTime");
+      localStorage.removeItem("checkedOut");
+      scheduleMidnightReset(); // Reschedule for the next midnight
+    }, msUntilMidnight);
+  }
+  scheduleMidnightReset();
+
+  let attendanceCalendarInstance = null;
+
+  // This function navigates from the attendance details back to the attendance calendar.
+  function hideAttendanceDetails() {
+    document.getElementById('attendance-detail-section').style.display = 'none';
+    document.getElementById('attendance-calendar-content').style.display = 'block';
+
+    if (attendanceCalendarInstance) {
+        attendanceCalendarInstance.render();
+    }
+  }
+
+  // Attendance Calendar card click
+  document.getElementById('attendance-calendar-card').addEventListener('click', function(event) {
+    event.preventDefault();
+    showLoader();
+
+    fetch('/attendance/calendar')
+      .then(res => res.json())
+      .then(data => {
+        // Hide the dashboard sections and show the attendance calendar section
+        document.querySelector('.attendance-panel').style.display = 'none';
+        document.getElementById('dashboard-section').style.display = 'none';
+        document.getElementById('attendance-calendar-section').style.display = 'block';
+
+        // Hide the details section in case it was open
+        document.getElementById('attendance-detail-section').style.display = 'none';
+
+        // Check if data is empty or not an array
+        if (!Array.isArray(data) || data.length === 0) {
+            document.getElementById('attendance-calendar-content').style.display = 'none';
+            document.getElementById('no-attendance-data-message').style.display = 'block';
+        } else {
+            document.getElementById('attendance-calendar-content').style.display = 'block';
+            document.getElementById('no-attendance-data-message').style.display = 'none';
+
+            let calendarEl = document.getElementById('attendanceCalendar');
+            if(attendanceCalendarInstance) {
+                attendanceCalendarInstance.destroy();
+                attendanceCalendarInstance = null;
+            }
+
+            attendanceCalendarInstance = new FullCalendar.Calendar(calendarEl, {
+              initialView: 'dayGridMonth',
+              height: 600,
+              events: data.map(a => ({
+                start: a.date,
+                display: 'background',
+                backgroundColor: a.status === "Present" ? "green" :
+                                 a.status === "Absent" ? "red" : "yellow"
+              })),
+              eventDidMount: function(info) {
+                info.el.style.borderRadius = "8px";
+              },
+              dateClick: function(info) {
+                const selectedDate = info.dateStr;
+                showLoader();
+                fetch(`/api/attendance/day/${selectedDate}`)
+                  .then(res => res.json())
+                  .then(data => {
+                    document.getElementById('attendance-calendar-content').style.display = 'none';
+                    document.getElementById('attendance-detail-section').style.display = 'block';
+
+                    const dateObj = new Date(selectedDate);
+                    const dayName = dateObj.toLocaleDateString('en-US', { weekday: 'long' });
+
+                    document.getElementById('detail-date').innerText = selectedDate;
+                    document.getElementById('detail-day').innerText = dayName;
+                    const statusEl = document.getElementById('detail-status');
+
+                    if (dayName === "Saturday" || dayName === "Sunday") {
+                      statusEl.innerText = "Weekend";
+                      statusEl.className = "status-pill Weekend";
+                      document.getElementById('detail-checkin').innerText = "-";
+                      document.getElementById('detail-checkout').innerText = "-";
+                      document.getElementById('detail-hours').innerText = "0";
+                    } else {
+                      function formatHHMM(timeStr) {
+                        if (!timeStr) return "-";
+                        if (timeStr.includes(":")) {
+                          const parts = timeStr.split(":");
+                          return parts[0].padStart(2,"0") + ":" + parts[1].padStart(2,"0");
+                        }
+                        const d = new Date(timeStr);
+                        if (!isNaN(d)) return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
+                        return "-";
+                      }
+
+                      const checkIn = formatHHMM(data.checkInTime);
+                      const checkOut = formatHHMM(data.checkOutTime);
+                      const hoursWorked = data.hoursWorked || "0";
+
+                      document.getElementById('detail-checkin').innerText = checkIn;
+                      document.getElementById('detail-checkout').innerText = checkOut;
+                      document.getElementById('detail-hours').innerText = hoursWorked;
+                      const status = data.status || "Absent";
+                      statusEl.innerText = status;
+                      statusEl.className = "status-pill " + status;
+                    }
+                    hideLoader();
+                  })
+                  .catch(err => {
+                    console.error("Error fetching attendance data", err);
+                    hideLoader();
+                  });
+              }
+            });
+            attendanceCalendarInstance.render();
+        }
+        hideLoader();
+      })
+      .catch(err => { alert("Error loading attendance."); console.error(err); hideLoader(); });
+  });
+
+  window.addEventListener('DOMContentLoaded',hideLoader);
 </script>
+
 </body>
 </html>
