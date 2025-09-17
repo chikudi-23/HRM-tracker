@@ -116,7 +116,7 @@
     <div class="profile-box">
       <img id="profile-preview"
            th:src="${user.profilePicPath != null} ? @{/uploads/{file}(file=${user.profilePicPath})} : @{/images/default-user.png}"
-           alt="Profile Image">
+           alt="">
 
       <!-- Action buttons wrapper -->
       <div class="profile-actions">

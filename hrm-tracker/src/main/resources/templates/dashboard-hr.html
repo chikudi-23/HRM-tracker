@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8" />
@@ -6,279 +5,6 @@
   <link rel="stylesheet" th:href="@{/css/style.css}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet"/>
-
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; }
-    .dashboard-container { display: flex; min-height: 100vh; }
-    .sidebar { width: 250px; background: linear-gradient(to bottom, #001f3f, #0074D9); color: #fff; padding: 30px 20px; box-shadow: 2px 0 10px rgba(0,0,0,0.1); }
-    .sidebar h2 { font-size: 24px; margin-bottom: 30px; color: #7FDBFF; }
-    .sidebar ul { list-style: none; }
-    .sidebar ul li { margin: 20px 0; }
-    .sidebar ul li a { text-decoration: none; color: #ccefff; font-size: 16px; transition: all 0.3s ease; }
-    .sidebar ul li a:hover { color: #ffffff; padding-left: 8px; }
-
-    .main-content { flex: 1; padding: 30px; background-color: #ffffff; display: flex; flex-direction: column; min-height: 100vh; }
-    .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-    .topbar h1 { font-size: 26px; color: #333; }
-    .logout-btn { background: linear-gradient(45deg, #ff4b2b, #ff416c); color: white; padding: 10px 18px; text-decoration: none; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; transition: 0.3s ease; }
-    .logout-btn:hover { background: linear-gradient(45deg, #e63e2e, #e03362); }
-
-
-    /* Dashboard Flex */
-    .dashboard-flex { display: flex; gap: 25px; align-items: flex-start; flex-wrap: wrap; }
-
-    /* Attendance Panel (Smaller, White Background) */
-    .attendance-panel {
-      flex: 0.8; padding: 20px; background: #ffffff;
-      color: #333; border-radius: 14px; box-shadow: 0 6px 16px rgba(0,0,0,0.1);
-      display: flex; flex-direction: column; gap: 8px;
-      min-width: 250px; max-width: 300px;
-      align-items: center; /* Center contents */
-    }
-
-    /* Profile Image on Attendance Panel */
-    .attendance-profile-box { width: 100px; height: 100px; border-radius: 50%; overflow: hidden; margin-bottom: 15px; border: 2px solid #0074D9; }
-    .attendance-profile-box img { width: 100%; height: 100%; object-fit: cover; }
-
-   .attendance-panel p, .attendance-panel h2 {
-    text-align: left;   /* Left align all text */
-    width: 100%;
-    margin: 5px 0;
-    }
-
-    /* Attendance Buttons */
-        .attendance-btn {
-    margin-top: 10px;
-    padding: 12px 0;      /* Same height */
-    font-size: 16px;       /* Same font size */
-    width: 120px;          /* Fixed width for both */
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.3s ease;
-}
-
-  #checkin-btn { background: #ff4b2b; color: white; }
-#checkin-btn:disabled { background: white; color: #ff4b2b; border: 1px solid #ff4b2b; }
-
-#checkout-btn { background: #27ae60; color: white; }
-#checkout-btn:disabled { background: white; color: #27ae60; border: 1px solid #27ae60; }
-
-
-   .cards-container {
-      flex: 2;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 25px;
-      margin-bottom: 30px;
-    }
-    .card {
-      padding: 25px;
-      border-radius: 14px;
-      color: white;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.15);
-      transition: transform 0.3s ease;
-      cursor: pointer;
-      user-select: none;
-    }
-    .card:hover { transform: translateY(-5px); }
-    .card:nth-child(1) { background: linear-gradient(to right, #43cea2, #185a9d); }
-    .card:nth-child(2) { background: linear-gradient(to right, #f7971e, #ffd200); }
-    .card:nth-child(3) { background: linear-gradient(to right, #ff512f, #dd2476); }
-    .card:nth-child(4) { background: linear-gradient(to right, #2193b0, #6dd5ed); }
-    .card h2 { font-size: 24px; margin-bottom: 10px; }
-
-    #employee-details-section { display: none; margin-top: 20px; max-width: 1000px; margin-left: auto; margin-right: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 20px; border-radius: 10px; background-color: #fff; overflow-x: auto; position: relative; }
-    #employee-details-section h2 { text-align: center; margin-bottom: 20px; color: #333; }
-    #employees-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
-    #employees-table th, #employees-table td { border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle; }
-    #employees-table th { background-color: #0074D9; color: white; white-space: nowrap; }
-    #employees-table tr:nth-child(even) { background-color: #f9f9f9; }
-    #employees-table tr:hover { background-color: #f1f1f1; }
-
-/* Calendar Section */
-    #announcement-details-section, #attendance-calendar-section {
-      display:none; margin-top:20px; width:100%; padding:20px;
-      border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.1);
-      background-color:#fff; position:relative;
-    }
-
-    #announcement-details-section h2, #attendance-calendar-section h2{ text-align: center; margin-bottom: 20px; color: #333; }
-    #calendar, #attendanceCalendar {
-      margin: 20px auto; width: 100% !important; min-height: 600px !important;
-    }
-    #attendance-detail-section {
-      display: none;
-      margin-top: 20px;
-      padding: 25px;
-      border-radius: 12px;
-      background: #ffffff;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-      transition: all 0.3s ease-in-out;
-    }
-
-    #attendance-detail-section h3 {
-      font-size: 20px;
-      font-weight: 600;
-      margin-bottom: 15px;
-      color: #333;
-      border-bottom: 2px solid #f0f0f0;
-      padding-bottom: 8px;
-    }
-    .horizontal-attendance {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 20px;
-      border: 1px solid #e5e5e5;
-      border-radius: 12px;
-      background: #ffffff;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04);
-      margin-top: 20px;
-      flex-wrap: wrap;
-    }
-
-    .date-column {
-      min-width: 120px;
-      text-align: center;
-      margin-right: 20px;
-    }
-
-    .date-text {
-      font-weight: bold;
-      font-size: 16px;
-      color: #185a9d;
-    }
-
-    .day-text {
-      font-size: 14px;
-      color: #666;
-      margin-top: 4px;
-    }
-
-    .timeline-bar {
-      position: relative;
-      flex-grow: 1;
-      height: 6px;
-      background-color: #d0d0d0;
-      border-radius: 4px;
-      margin: 0 20px;
-    }
-
-    .start-time,
-    .end-time {
-      position: absolute;
-      top: -20px;
-      font-size: 13px;
-      font-weight: bold;
-      color: #333;
-    }
-
-    .start-time {
-      left: 0;
-    }
-
-    .end-time {
-      right: 0;
-    }
-
-    .worked-hours {
-      min-width: 120px;
-      text-align: right;
-      font-size: 14px;
-      font-weight: bold;
-      color: #333;
-    }
-
-    .attendance-status {
-      margin-top: 15px;
-      text-align: right;
-      font-size: 14px;
-      font-weight: bold;
-      color: #444;
-    }
-
-    .status-pill {
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 13px;
-      color: white;
-      margin-left: 6px;
-    }
-
-    .status-pill.Present {
-      background-color: #27ae60;
-    }
-
-    .status-pill.Absent {
-      background-color: #e74c3c;
-    }
-
-    .status-pill.Leave {
-      background-color: #f39c12;
-    }
-
-    .status-pill.Weekend,
-    .status-pill.Holiday {
-      background-color: #7f8c8d;
-    }
-/* Back Icon */
-    .back-btn {
-      position: absolute; top: 15px; left: 15px;
-      background: #185a9d; color: white; border: none;
-      border-radius: 50%; width: 40px; height: 40px;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; font-size: 18px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-      transition: background 0.3s ease;
-    }
-    .back-btn:hover { background: #43cea2; }
-
-    .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:10000; }
-    .modal-content { background:#fff; padding:20px; border-radius:10px; width:400px; position:relative; }
-    .modal-content h3 { margin-bottom:10px; }
-    .modal-content input, .modal-content textarea { width:100%; margin:8px 0; padding:8px; border:1px solid #ccc; border-radius:6px; }
-    .modal-content button { margin-top:10px; padding:8px; border:none; border-radius:6px; cursor:pointer; }
-    .save-btn { background:#185a9d; color:#fff; }
-    .cancel-btn { background:#aaa; color:#fff; }
-    .delete-btn { background:#ff4b2b; color:#fff; }
-
-    /* Horizontal Legend */
-    .legend {
-      display: flex;
-      justify-content: center;
-      gap: 25px;
-      margin-top: 20px;
-    }
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 14px;
-      color: #333;
-    }
-    .legend-color {
-      width: 16px;
-      height: 16px;
-      border-radius: 3px;
-    }
-    #timer { font-size: 24px; font-weight: bold; margin-top: 10px; }
-
-    #loader-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(255,255,255,0.7); display: flex; align-items: center; justify-content: center; z-index: 9999; transition: opacity 0.3s; }
-    #loader-overlay.hidden { opacity: 0; pointer-events: none; }
-    .spinner { border: 8px solid #f3f3f3; border-top: 8px solid #0074D9; border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; }
-    @keyframes spin { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
-
-    /* New styles for the no-data message */
-    .no-data-message {
-        text-align: center;
-        padding: 40px;
-        color: #666;
-        font-size: 18px;
-    }
-  </style>
 </head>
 <body>
 <div id="loader-overlay" class="hidden"><div class="spinner"></div></div>
@@ -379,7 +105,7 @@
           </div>
 
           <div class="worked-hours">
-            <span id="detail-hours">0</span> Hrs Worked
+            <span id="detail-hours">0</span>
           </div>
         </div>
 
@@ -676,14 +402,41 @@
                 attendanceCalendarInstance = null;
             }
 
+             const today = new Date().toISOString().slice(0, 10);
+            let todayStatus = null;
+            let todayData = null;
+
+            // Find today's attendance data if it exists
+            data.forEach(a => {
+              if (a.date === today) {
+                todayStatus = a.status;
+                todayData = a;
+              }
+            });
+
+            // If no data for today, and it's not a weekend, set status to Absent
+            const dayOfWeek = new Date().getDay(); // Sunday is 0, Saturday is 6
+            const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
+
+            if (!todayStatus && !isWeekend) {
+              data.push({
+                date: today,
+                status: "Absent",
+                checkInTime: null,
+                checkOutTime: null,
+                hoursWorked: 0
+              });
+            }
+
+
             attendanceCalendarInstance = new FullCalendar.Calendar(calendarEl, {
               initialView: 'dayGridMonth',
-              height: 600,
+              selectable: true,
               events: data.map(a => ({
                 start: a.date,
                 display: 'background',
                 backgroundColor: a.status === "Present" ? "green" :
-                                 a.status === "Absent" ? "red" : "yellow"
+                                 (a.status === "Absent" || !a.status) ? "red" : "yellow"
               })),
               eventDidMount: function(info) {
                 info.el.style.borderRadius = "8px";
@@ -691,6 +444,7 @@
               dateClick: function(info) {
                 const selectedDate = info.dateStr;
                 showLoader();
+
                 fetch(`/api/attendance/day/${selectedDate}`)
                   .then(res => res.json())
                   .then(data => {
@@ -698,9 +452,10 @@
                     document.getElementById('attendance-detail-section').style.display = 'block';
 
                     const dateObj = new Date(selectedDate);
-                    const dayName = dateObj.toLocaleDateString('en-US', { weekday: 'long' });
+                    const formattedDate = dateObj.toLocaleDateString('en-IN', { day:'numeric', month:'short'});
+                    const dayName = dateObj.toLocaleDateString('en-IN', { weekday: 'long' });
 
-                    document.getElementById('detail-date').innerText = selectedDate;
+                    document.getElementById('detail-date').innerText = formattedDate;
                     document.getElementById('detail-day').innerText = dayName;
                     const statusEl = document.getElementById('detail-status');
 
@@ -709,7 +464,7 @@
                       statusEl.className = "status-pill Weekend";
                       document.getElementById('detail-checkin').innerText = "-";
                       document.getElementById('detail-checkout').innerText = "-";
-                      document.getElementById('detail-hours').innerText = "0";
+                      document.getElementById('detail-hours').innerText = "0 Hrs Worked";
                     } else {
                       function formatHHMM(timeStr) {
                         if (!timeStr) return "-";
@@ -724,11 +479,20 @@
 
                       const checkIn = formatHHMM(data.checkInTime);
                       const checkOut = formatHHMM(data.checkOutTime);
-                      const hoursWorked = data.hoursWorked || "0";
+                      const hoursWorked = parseFloat(data.hoursWorked) || 0;
 
                       document.getElementById('detail-checkin').innerText = checkIn;
                       document.getElementById('detail-checkout').innerText = checkOut;
-                      document.getElementById('detail-hours').innerText = hoursWorked;
+
+                       const totalMinutes = Math.round(hoursWorked * 60);
+            const hours = Math.floor(totalMinutes / 60);
+            const minutes = totalMinutes % 60;
+
+            let hoursText = `${hours} Hr${hours !== 1 ? 's' : ''}`;
+            let minutesText = minutes > 0 ? ` ${minutes} Min${minutes !== 1 ? 's' : ''}` : '';
+
+            document.getElementById('detail-hours').innerText = `${hoursText}${minutesText} Worked`;
+
                       const status = data.status || "Absent";
                       statusEl.innerText = status;
                       statusEl.className = "status-pill " + status;

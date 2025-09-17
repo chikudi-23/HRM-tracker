@@ -269,10 +269,11 @@ public class DashboardServiceImpl implements DashboardService, UserDetailsServic
         if (attendance.getCheckOutTime() == null) {
             attendance.setCheckOutTime(LocalTime.now());
 
-            long hours = java.time.Duration.between(
-                    attendance.getCheckInTime(), attendance.getCheckOutTime()).toHours();
+            long minutes = java.time.Duration.between(
+                    attendance.getCheckInTime(), attendance.getCheckOutTime()).toMinutes();
 
-            attendance.setTotalHours(hours);
+            double hours = minutes / 60.0;
+            attendance.setTotalHours(hours); // change field type to Double in Attendance entity
         }
 
         return attendanceRepository.save(attendance);

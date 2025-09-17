@@ -284,22 +284,6 @@ public class DashboardController {
         }).collect(Collectors.toList());
     }
 
-//    @GetMapping("/attendance/day/{date}")
-//    public String getDayAttendance(@PathVariable String date, Model model) {
-//        String email = getCurrentUserEmail();
-//
-//        User user = userRepository.findByEmail(email)
-//                .orElseThrow(() -> new RuntimeException("User not found"));
-//
-//        LocalDate localDate = LocalDate.parse(date);
-//
-//        Attendance attendance = attendanceRepository.findByUserAndDate(user, localDate);
-//
-//        model.addAttribute("date", localDate);
-//        model.addAttribute("attendance", attendance);
-//
-//        return "dashboard-employee";
-//    }
 
     @GetMapping("/api/attendance/day/{date}")
     @ResponseBody
@@ -351,10 +335,103 @@ public class DashboardController {
         return time != null ? time.toString() : "N/A";
     }
 
-    private long calculateHours(LocalTime checkIn, LocalTime checkOut) {
-        return (checkIn != null && checkOut != null)
-                ? ChronoUnit.HOURS.between(checkIn, checkOut)
-                : 0;
+    private double calculateHours(LocalTime checkIn, LocalTime checkOut) {
+        if (checkIn != null && checkOut != null) {
+            long minutes = ChronoUnit.MINUTES.between(checkIn, checkOut);
+            return minutes / 60.0; // decimal hours
+        }
+        return 0;
+    }
+
+    // ================== Users for Attendance Card ==================
+    @ResponseBody
+    @GetMapping("/api/users")
+    public List<Map<String, Object>> getUsers(@RequestParam(required = false) String excludeRole) {
+        List<User> users = userRepository.findAll();
+        if (excludeRole != null) {
+            users = users.stream()
+                    .filter(u -> u.getRole() != null && !excludeRole.equalsIgnoreCase(u.getRole().getName()))
+                    .collect(Collectors.toList());
+        }
+        return users.stream().map(u -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", u.getId());
+            map.put("name", u.getFullName());
+            map.put("email", u.getEmail());
+            map.put("department", u.getDepartment() != null ? u.getDepartment().getName() : null);
+            map.put("role", u.getRole() != null ? u.getRole().getName() : null);
+            return map;
+        }).collect(Collectors.toList());
+    }
+
+    // Get attendance for a specific user (all days)
+    @ResponseBody
+    @GetMapping("/api/attendance/{userId}")
+    public List<Map<String, Object>> getAttendanceByUser(@PathVariable Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<Attendance> attendanceList = attendanceRepository.findByUser(user);
+
+        return attendanceList.stream().map(att -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("date", att.getDate().toString());
+
+            String status;
+            if (Boolean.TRUE.equals(att.getLeave1())) {
+                status = "Leave";
+            } else if (att.getCheckInTime() != null) {
+                status = "Present";
+            } else {
+                status = "Absent";
+            }
+
+            map.put("status", status);
+            map.put("checkInTime", timeOrNA(att.getCheckInTime()));
+            map.put("checkOutTime", timeOrNA(att.getCheckOutTime()));
+            map.put("hoursWorked", calculateHours(att.getCheckInTime(), att.getCheckOutTime()));
+
+            return map;
+        }).collect(Collectors.toList());
+    }
+
+    // Get attendance for a specific user on a specific day
+    @ResponseBody
+    @GetMapping("/api/attendance/{userId}/day/{date}")
+    public Map<String, Object> getAttendanceByUserAndDay(@PathVariable Long userId,
+                                                         @PathVariable String date) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        LocalDate localDate = LocalDate.parse(date);
+        Attendance attendance = attendanceRepository.findByUserAndDate(user, localDate);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("date", localDate.toString());
+
+        if (attendance != null) {
+            result.put("checkInTime", timeOrNA(attendance.getCheckInTime()));
+            result.put("checkOutTime", timeOrNA(attendance.getCheckOutTime()));
+            result.put("hoursWorked", calculateHours(attendance.getCheckInTime(), attendance.getCheckOutTime()));
+
+            String status;
+            if (Boolean.TRUE.equals(attendance.getLeave1())) {
+                status = "Leave";
+            } else if (attendance.getCheckInTime() != null) {
+                status = "Present";
+            } else {
+                status = "Absent";
+            }
+
+            result.put("status", status);
+        } else {
+            result.put("status", "Absent");
+            result.put("checkInTime", "N/A");
+            result.put("checkOutTime", "N/A");
+            result.put("hoursWorked", 0);
+        }
+
+        return result;
     }
 
 

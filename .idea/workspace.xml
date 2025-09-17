@@ -5,42 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="68171dfc-6971-46c0-b34a-f188354788d6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/dto/AuditLogDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hrm-tracker/src/main/resources/static/css/style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hrm-tracker/src/main/resources/static/css/style1.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/config/DataInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/config/DataInitializer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/config/WebConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/controller/AuthController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/controller/DashboardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/controller/DashboardController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/controller/ProfileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/controller/ProfileController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/entity/Announcement.java" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/entity/Announcement.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/entity/Attendance.java" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/entity/Attendance.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/entity/AuditLog.java" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/entity/AuditLog.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/entity/Leave.java" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/entity/Leave.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/entity/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/repository/AttendanceRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/repository/AttendanceRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/repository/LeaveRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/repository/LeaveRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/service/AuditLogService.java" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/service/AuditLogService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/service/impl/DashboardServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/java/com/hrmtracker/service/impl/DashboardServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/audit-logs.html" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/audit-logs.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/dashboard-admin.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/dashboard-employee.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/dashboard-hr.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/error.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/login.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/profile-employee.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/profile-hr.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/register.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/upload.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/final/id_proofs/1b442544-e120-4bc9-841b-d4ff6b190bdb_1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/final/id_proofs/5bea231f-058e-40e9-ada8-a31a4ccbc45a_4.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/final/id_proofs/b4df21db-5b09-4d64-9b39-b21982a820f4_4.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/final/id_proofs/e5d0f492-3f62-4370-b8d2-7ed0affb3117_1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/final/resumes/52373344-dc06-4d78-9e20-5c204006196d_2.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/final/resumes/7ca96508-afe3-4761-9043-81bcb41a34f8_3.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/final/resumes/815bc05f-ac79-4f5c-b489-926013a805fc_ideaIC-2025.1.1.1.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/dashboard-admin.html" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/dashboard-admin.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/dashboard-employee.html" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/dashboard-employee.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/dashboard-hr.html" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/dashboard-hr.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/profile-employee.html" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/profile-employee.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/profile-hr.html" beforeDir="false" afterPath="$PROJECT_DIR$/hrm-tracker/src/main/resources/templates/profile-hr.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/uploads/1756202501984_2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/uploads/1756202507787_3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/uploads/1756202548232_2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/uploads/1756203721742_3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/uploads/1756203729625_4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/uploads/1756204247638_3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/uploads/1756206553065_2.jpg" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -132,5 +116,10 @@
       <updated>1754375159783</updated>
     </task>
     <servers />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/hrm_tracker_2_merge_till_dashboard$HrmTrackerApplication.ic" NAME="HrmTrackerApplication Coverage Results" MODIFIED="1758084656482" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>com.hrmtracker.*</FILTER>
+    </SUITE>
   </component>
 </project>

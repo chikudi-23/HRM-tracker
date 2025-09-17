@@ -2,189 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/style1.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet"/>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
- body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; }
 
- /* Dashboard layout */
- .dashboard-container { display: flex; min-height: 100vh; }
- .sidebar {
-   width: 250px;
-   background: linear-gradient(to bottom, #001f3f, #0074D9);
-   color: #fff;
-   padding: 30px 20px;
-   box-shadow: 2px 0 10px rgba(0,0,0,0.1);
- }
- .sidebar h2 { font-size: 24px; margin-bottom: 30px; color: #7FDBFF; }
- .sidebar ul { list-style: none; }
- .sidebar ul li { margin: 20px 0; }
- .sidebar ul li a {
-   text-decoration: none;
-   color: #ccefff;
-   font-size: 16px;
-   transition: all 0.3s ease;
-   cursor: pointer;
- }
- .sidebar ul li a:hover { color: #ffffff; padding-left: 8px; }
-
- .main-content {
-   flex: 1;
-   padding: 30px;
-   background-color: #ffffff;
-   display: flex;
-   flex-direction: column;
-   min-height: 100vh;
- }
- .topbar {
-   display: flex;
-   justify-content: space-between;
-   align-items: center;
-   margin-bottom: 30px;
- }
- .topbar h1 { font-size: 26px; color: #333; }
- .logout-btn {
-   background: linear-gradient(45deg, #ff4b2b, #ff416c);
-   color: white;
-   padding: 10px 18px;
-   text-decoration: none;
-   border: none;
-   border-radius: 6px;
-   font-size: 14px;
-   cursor: pointer;
-   transition: 0.3s ease;
- }
- .logout-btn:hover { background: linear-gradient(45deg, #e63e2e, #e03362); }
-
- /* Dashboard cards */
- .cards-container {
-   display: grid;
-   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-   gap: 25px;
-   margin-bottom: 30px;
- }
- .card {
-   padding: 25px;
-   border-radius: 14px;
-   color: white;
-   box-shadow: 0 6px 18px rgba(0,0,0,0.15);
-   transition: transform 0.3s ease;
-   cursor: pointer;
-   user-select: none;
- }
- .card:hover { transform: translateY(-5px); }
- .card:nth-child(1) { background: linear-gradient(to right, #43cea2, #185a9d); }
- .card:nth-child(2) { background: linear-gradient(to right, #f7971e, #ffd200); }
- .card:nth-child(3) { background: linear-gradient(to right, #ff512f, #dd2476); }
- .card:nth-child(4) { background: linear-gradient(to right, #2193b0, #6dd5ed); }
- .card:nth-child(5) { background: linear-gradient(to right, #00c6ff, #0072ff); }
- .card:nth-child(6) { background: linear-gradient(to right, #f857a6, #ff5858); }
- .card h2 { font-size: 24px; margin-bottom: 10px; }
-
- /* ---------------- EMPLOYEE SECTION ---------------- */
-
-    #employee-details-section { display: none; margin-top: 20px; max-width: 1000px; margin-left: auto; margin-right: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 20px; border-radius: 10px; background-color: #fff; overflow-x: auto; position: relative; }
-    #employee-details-section h2 { text-align: center; margin-bottom: 20px; color: #333; }
-    #employees-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
-    #employees-table th, #employees-table td { border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle; }
-    #employees-table th { background-color: #0074D9; color: white; white-space: nowrap; }
-    #employees-table tr:nth-child(even) { background-color: #f9f9f9; }
-    #employees-table tr:hover { background-color: #f1f1f1; }
- /* ---------------- DEPARTMENT SECTION ---------------- */
- #department-details-section { display: none; margin-top: 20px; max-width: 1000px; margin-left: auto; margin-right: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 20px; border-radius: 10px; background-color: #fff; overflow-x: auto; position: relative; }
- #department-details-section h2 { text-align: center; margin-bottom: 20px; color: #333; }
- #departments-table {
-   width: 100%;
-   border-collapse: collapse;
-   margin-bottom: 15px;
- }
- #departments-table th, #departments-table td { border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle; }
- #departments-table th { background-color: #0074D9; color: white; white-space: nowrap; }
- #departments-table tr:nth-child(even) { background-color: #f9f9f9; }
- #departments-table tr:hover { background-color: #f1f1f1; }
- #department-add-form {
-   max-width: 600px;
-   margin: 0 auto 20px auto;
-   display: flex;
-   gap: 10px;
-   justify-content: center;
- }
- #department-add-form input[type="text"] {
-   flex: 1;
-   padding: 8px 10px;
-   font-size: 14px;
-   border: 1px solid #ccc;
-   border-radius: 6px;
- }
- #department-details-section button {display: block;margin: 0 auto;padding: 8px 15px;font-size: 14px;border: none;border-radius: 6px;background-color: #185a9d;color: white;cursor: pointer;transition: background-color 0.3s ease;}
-  #department-details-section button:hover {background-color: #43cea2;}
-  #department-add-form button {padding: 8px 18px;font-size: 14px;border: none;border-radius: 6px;background-color: #0074D9;color: white;cursor: pointer;transition: background-color 0.3s ease;}
-  #department-add-form button:hover {background-color: #005fa3;}
- .edit-input { width: 90%; padding: 4px 6px; font-size: 14px; border-radius: 4px; border: 1px solid #ccc; }
- .action-btn { margin-left: 5px; padding: 4px 8px; font-size: 13px; border: none; border-radius: 4px; cursor: pointer; }
- .save-btn { background-color: #28a745; color: white; }
- .cancel-btn { background-color: #dc3545; color: white; }
-
- /* ---------------- HR SECTION ---------------- */
- #hr-details-section { display: none; margin-top: 20px; max-width: 1000px; margin-left: auto; margin-right: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 20px; border-radius: 10px; background-color: #fff; overflow-x: auto; position: relative; }
- #hr-details-section h2 { text-align: center; margin-bottom: 20px; color: #333; }
- #hr-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
- #hr-table th, #hr-table td { border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle;}
- #hr-table th { background-color: #0074D9; color: white; white-space: nowrap;}
- #hr-table tr:nth-child(even) { background-color: #f9f9f9; }
- #hr-table tr:hover { background-color: #f1f1f1; }
-
- /* ---------------- ANNOUNCEMENT SECTION ---------------- */
- #announcement-details-section {
-   display: none;
-   margin-top: 20px;
-   width: 100%;
-   padding: 20px;
-   border-radius: 10px;
-   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-   background-color: #fff;
-   position: relative;
- }
- #calendar { margin: 20px auto; width: 100% !important; min-height: 600px !important; }
-
- /* Back Icon */
- .back-btn {
-   position: absolute;
-   top: 15px;
-   left: 15px;
-   background: #185a9d;
-   color: white;
-   border: none;
-   border-radius: 50%;
-   width: 40px;
-   height: 40px;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   cursor: pointer;
-   font-size: 18px;
-   box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-   transition: background 0.3s ease;
- }
- .back-btn:hover { background: #43cea2; }
-
-     .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:10000; }
-     .modal-content { background:#fff; padding:20px; border-radius:10px; width:400px; position:relative; }
-     .modal-content h3 { margin-bottom:10px; }
-     .modal-content input, .modal-content textarea { width:100%; margin:8px 0; padding:8px; border:1px solid #ccc; border-radius:6px; }
-     .modal-content button { margin-top:10px; padding:8px; border:none; border-radius:6px; cursor:pointer; }
-     .save-btn { background:#185a9d; color:#fff; }
-     .cancel-btn { background:#aaa; color:#fff; }
-     .delete-btn { background:#ff4b2b; color:#fff; }
-
-         /* Loader styles */
-         #loader-overlay {position: fixed;top: 0;left: 0;width: 100vw;height: 100vh;background: rgba(255,255,255,0.7);display: flex;align-items: center;justify-content: center;z-index: 9999;transition: opacity 0.3s;}
-         #loader-overlay.hidden {opacity: 0;pointer-events: none;}
-         .spinner {border: 8px solid #f3f3f3;border-top: 8px solid #0074D9;border-radius: 50%;width: 60px;height: 60px;animation: spin 1s linear infinite;}
-         @keyframes spin {0% {transform: rotate(0deg);}100% {transform: rotate(360deg);}}
-    </style>
 </head>
 <body>
 <div id="loader-overlay" class="hidden">
@@ -195,7 +16,7 @@
     <div class="sidebar">
         <h2>Admin Panel</h2>
         <ul>
-            <li><a href="#" onclick="loadDashboard()">Dashboard</a></li>
+            <li><a href="#" onclick="showSection('dashboard-section')">Dashboard</a></li>
             <li><a th:href="@{/admin/audit-logs}">Audit Logs</a></li>
         </ul>
     </div>
@@ -224,14 +45,71 @@
             <div class="card">
                 <h2>Leaves</h2>
             </div>
-            <div class="card">
+            <div class="card" id="attendance-card">
                 <h2>Attendance</h2>
             </div>
             <div class="card" id="total-announcements-card"><h2>Announcements</h2></div>
         </div>
 
-        <div id="employee-details-section">
-            <button class="back-btn" onclick="hideEmployeeDetails()"><i class="fas fa-arrow-left"></i></button>
+        <div id="attendance-user-list-section" style="display:none;">
+            <button class="back-btn" onclick="showSection('dashboard-section')"><i class="fas fa-arrow-left"></i></button>
+            <h2>Attendance Dashboard</h2>
+            <table id="attendance-users-table" border="1" cellpadding="10" cellspacing="0">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Department</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="user-attendance-calendar-section" style="display:none;">
+            <button class="back-btn" onclick="showSection('dashboard-section')"><i class="fas fa-arrow-left"></i></button>
+            <h2 id="user-attendance-title"></h2>
+
+            <div id="attendance-calendar-content">
+                <div id="userAttendanceCalendar"></div>
+                <div class="legend">
+                    <div class="legend-item"><span class="legend-color" style="background: green;"></span> Present</div>
+                    <div class="legend-item"><span class="legend-color" style="background: red;"></span> Absent</div>
+                    <div class="legend-item"><span class="legend-color" style="background: yellow;"></span> Leave</div>
+                </div>
+            </div>
+
+            <div id="no-attendance-data-message" class="no-data-message" style="display: none;">
+                No attendance data found for this period.
+            </div>
+
+            <div id="attendance-detail-section" style="display: none;">
+                <button class="back-btn" onclick="hideAttendanceDetails()"><i class="fas fa-arrow-left"></i></button>
+                <h3 id="attendance-detail-title">Attendance Details</h3>
+
+                <div class="horizontal-attendance">
+                    <div class="date-column">
+                        <div id="detail-date" class="date-text">--</div>
+                        <div id="detail-day" class="day-text">--</div>
+                    </div>
+                    <div class="timeline-bar">
+                        <div class="start-time" id="detail-checkin">--</div>
+                        <div class="end-time" id="detail-checkout">--</div>
+                    </div>
+                    <div class="worked-hours">
+                        <span id="detail-hours">0</span>
+                    </div>
+                </div>
+                <div class="attendance-status">
+                    Status: <span id="detail-status" class="status-pill">--</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="employee-details-section" style="display:none;">
+            <button class="back-btn" onclick="showSection('dashboard-section')"><i class="fas fa-arrow-left"></i></button>
             <h2>Employees List</h2>
             <table id="employees-table" border="1" cellpadding="10" cellspacing="0">
                 <thead>
@@ -243,8 +121,8 @@
                 <tbody></tbody>
             </table>
         </div>
-        <div id="department-details-section">
-            <button class="back-btn" onclick="hideDepartmentDetails()"><i class="fas fa-arrow-left"></i></button>
+        <div id="department-details-section" style="display:none;">
+            <button class="back-btn" onclick="showSection('dashboard-section')"><i class="fas fa-arrow-left"></i></button>
             <h2>Departments List</h2>
 
             <form id="department-add-form">
@@ -261,8 +139,8 @@
             </table>
         </div>
 
-        <div id="hr-details-section">
-            <button class="back-btn" onclick="hideHRDetails()"><i class="fas fa-arrow-left"></i></button>
+        <div id="hr-details-section" style="display:none;">
+            <button class="back-btn" onclick="showSection('dashboard-section')"><i class="fas fa-arrow-left"></i></button>
             <h2>HR List</h2>
             <table id="hr-table">
                 <thead>
@@ -275,8 +153,8 @@
             </table>
         </div>
 
-        <div id="announcement-details-section">
-            <button class="back-btn" onclick="backToDashboard()">
+        <div id="announcement-details-section" style="display:none;">
+            <button class="back-btn" onclick="showSection('dashboard-section')">
                 <i class="fas fa-arrow-left"></i>
             </button>
             <h2 style="text-align:center; margin-bottom:20px;">Announcements Calendar</h2>
@@ -297,122 +175,304 @@
         </div>
     </div>
 </div>
-
 <script th:inline="javascript">
     var currentUserRole = /*[[${user.role.name}]]*/ 'GUEST';
 </script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
 <script>
     let calendar;
- let selectedDate = null;
- let editingEvent = null;
+    let selectedDate = null;
+    let editingEvent = null;
+    let attendanceCalendarInstance;
+    let currentUserId;
 
-   // Show loader
- function showLoader() {
-   document.getElementById('loader-overlay').classList.remove('hidden');
- }
- // Hide loader
- function hideLoader() {
-   document.getElementById('loader-overlay').classList.add('hidden');
- }
+    // A single, universal function to show and hide sections
+    function showSection(sectionId) {
+      const sections = ['dashboard-section', 'attendance-user-list-section', 'user-attendance-calendar-section', 'employee-details-section', 'department-details-section', 'hr-details-section', 'announcement-details-section'];
 
-function getSafeUploadLink(path) {
- if (!path) return '';
- let cleanPath = path;
+      sections.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+          element.style.display = 'none';
+        }
+      });
 
- if (cleanPath.startsWith('/')) {
-   cleanPath = cleanPath.substring(1);
- }
- function showLoader() {
-   document.getElementById('loader-overlay').classList.remove('hidden');
- }
- function hideLoader() {
-   document.getElementById('loader-overlay').classList.add('hidden');
- }
+      const targetSection = document.getElementById(sectionId);
+      if (targetSection) {
+        targetSection.style.display = (sectionId === 'dashboard-section') ? 'grid' : 'block';
+      }
+    }
 
- if (cleanPath.startsWith("uploads/")) {
-   cleanPath = cleanPath.substring("uploads/".length);
- }
 
- return `/uploads/${cleanPath}`;
+    // Show loader
+    function showLoader() {
+      document.getElementById('loader-overlay').classList.remove('hidden');
+    }
+    // Hide loader
+    function hideLoader() {
+      document.getElementById('loader-overlay').classList.add('hidden');
+    }
+
+    function getSafeUploadLink(path) {
+      if (!path) return '';
+      let cleanPath = path;
+
+      if (cleanPath.startsWith('/')) {
+        cleanPath = cleanPath.substring(1);
+      }
+      if (cleanPath.startsWith("uploads/")) {
+        cleanPath = cleanPath.substring("uploads/".length);
+      }
+
+      return `/uploads/${cleanPath}`;
+    }
+
+    // New Functions for Attendance
+    document.getElementById('attendance-card').addEventListener('click', showAttendanceList);
+
+    function showAttendanceList() {
+    showLoader();
+    showSection('attendance-user-list-section');
+
+    const tbody = document.querySelector('#attendance-users-table tbody');
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Loading...</td></tr>';
+
+    fetch('/api/users?excludeRole=ADMIN')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            tbody.innerHTML = ''; // Clear the loading message
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No users found.</td></tr>';
+            } else {
+                data.forEach(user => {
+                    const row = `
+                        <tr>
+                            <td><a href="#" onclick="showUserAttendance(${user.id}, '${user.name}')">${user.name}</a></td>
+                            <td>${user.department || '-'}</td>
+                            <td>${user.email}</td>
+                            <td>${user.role}</td>
+                        </tr>
+                    `;
+                    tbody.innerHTML += row;
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:red;">Error loading users.</td></tr>';
+        })
+        .finally(() => {
+            hideLoader();
+        });
 }
 
- // Handle click on total employees card
- document.getElementById('total-employees-card').addEventListener('click', function(event) {
-   event.preventDefault();
+    function showUserAttendance(userId, userName) {
+        showLoader();
+        currentUserId = userId;
+        showSection('user-attendance-calendar-section');
+        document.getElementById('user-attendance-title').innerText = `${userName}'s Attendance Calendar`;
+        document.getElementById('attendance-detail-section').style.display = 'none';
+        document.getElementById('attendance-calendar-content').style.display = 'block';
 
-   const tbody = document.querySelector('#employees-table tbody');
-   tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Loading...</td></tr>';
+        const calendarEl = document.getElementById('userAttendanceCalendar');
+        if (attendanceCalendarInstance) {
+            attendanceCalendarInstance.destroy();
+        }
 
-   fetch('/employees')
-     .then(response => {
-       if (!response.ok) throw new Error('Network response was not OK');
-       return response.json();
-     })
-     .then(data => {
-       tbody.innerHTML = '';
-       if (data.length === 0) {
-         tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No employees found.</td></tr>';
-       } else {
-         data.forEach(emp => {
-           let idProofLink = '-';
-           let resumeLink = '-';
+        attendanceCalendarInstance = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            selectable: true,
+            headerToolbar: {
+                right: 'prev,next today',
+                left: 'title'
+            },
 
-           // Show document links only if current user is ADMIN or HR
-           if (currentUserRole === 'ADMIN' || currentUserRole === 'HR') {
-             if (emp.idProofPath) {
-               idProofLink = `<a href="${getSafeUploadLink(emp.idProofPath)}" target="_blank" class="doc-link"><i class="fa fa-eye"></i></a>`;
-             }
-             if (emp.resumePath) {
-               resumeLink = `<a href="${getSafeUploadLink(emp.resumePath)}" target="_blank" title="View Resume" class="doc-link"><i class="fa fa-eye"></i></a>`;
-             }
-           }
+             events: function(fetchInfo, successCallback, failureCallback) {
+                fetch(`/api/attendance/${userId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const events = data.map(att => {
+                            let color = 'gray'; // Default color for unknown status
+                            if (att.status === 'Present') color = 'green';
+                            else if (att.status === 'Absent') color = 'red';
+                            else if (att.status === 'Leave') color = 'yellow';
 
-           const row = `
-             <tr>
-               <td>${emp.name}</td>
-               <td>${emp.email}</td>
-               <td>${emp.phone || '-'}</td>
-               <td>${emp.departmentName || '-'}</td>
-               <td>${emp.authProvider || '-'}</td>
-               <td style="text-align:center;">${idProofLink}</td>
-               <td style="text-align:center;">${resumeLink}</td>
-             </tr>`;
-           tbody.innerHTML += row;
-         });
-       }
+                            return {
+                                // We don't need the title since we are using background display
+                                // title: att.status,
+                                start: att.date, // Changed from 'date' to 'start' for consistency with FullCalendar docs
+                                display: 'background', // This is the new property
+                                backgroundColor: color,
+                                borderColor: color,
+                                extendedProps: {
+                                    checkInTime: att.checkInTime,
+                                    checkOutTime: att.checkOutTime,
+                                    hoursWorked: att.hoursWorked,
+                                    status: att.status
+                                }
+                            };
+                        });
+                        successCallback(events);
+                        hideLoader();
+                    })
+                    .catch(error => {
+                        console.error('Error fetching attendance:', error);
+                        failureCallback(error);
+                        hideLoader();
+                    });
+            },
+             dateClick: function(info) {
+                fetchDayDetails(currentUserId, info.dateStr);
+            },
+            eventDidMount: function(info) {
+                info.el.style.borderRadius = "8px";
+            },
+            eventClick: function(info) {
+                fetchDayDetails(currentUserId, info.event.startStr);
+            }
+        });
+        attendanceCalendarInstance.render();
+    }
 
-       // Show employee list and hide dashboard cards
-       document.getElementById('employee-details-section').style.display = 'block';
-       document.getElementById('dashboard-section').style.display = 'none';
-     })
-     .catch(error => {
-       tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:red;">Error loading employees.</td></tr>`;
-       console.error('Fetch error:', error);
-       hideLoader();
-     });
- });
+    function formatHHMM(timeStr) {
+    if (!timeStr) return "-";
+    if (timeStr.includes(":") && timeStr.split(':').length >= 2) {
+        const parts = timeStr.split(':');
+        return `${parts[0].padStart(2, '0')}:${parts[1].padStart(2, '0')}`;
+    }
+    return "-";
+}
+   function fetchDayDetails(userId, dateStr) {
+        showLoader();
+        fetch(`/api/attendance/${userId}/day/${dateStr}`)
+            .then(response => response.json())
+            .then(data => {
+                const detailSection = document.getElementById('attendance-detail-section');
+                const calendarContent = document.getElementById('attendance-calendar-content');
 
- // Hide employee list and show dashboard cards again
- function hideEmployeeDetails() {
-   document.getElementById('employee-details-section').style.display = 'none';
-   document.getElementById('dashboard-section').style.display = 'grid';
- }
+                const dateObj = new Date(dateStr);
+                const dayName = dateObj.toLocaleDateString('en-IN', { weekday: 'long' });
+                const statusEl = document.getElementById('detail-status');
+
+                document.getElementById('detail-date').innerText = dateObj.toLocaleDateString('en-IN', {day:'numeric', month:'short'});
+                document.getElementById('detail-day').innerText = dayName;
+
+                // Check if the day is a weekend (Saturday or Sunday)
+                if (dayName === "Saturday" || dayName === "Sunday") {
+                    document.getElementById('detail-checkin').innerText = "-";
+                    document.getElementById('detail-checkout').innerText = "-";
+                    document.getElementById('detail-hours').innerText = "0 Hrs Worked";
+                    statusEl.innerText = "Weekend";
+                    statusEl.className = "status-pill Weekend";
+                } else {
+                    // Regular weekday logic
+                    function formatHHMM(timeStr) {
+                        if (!timeStr) return "-";
+                        if (timeStr.includes(":") && timeStr.split(':').length >= 2) {
+                            const parts = timeStr.split(':');
+                            return `${parts[0].padStart(2, '0')}:${parts[1].padStart(2, '0')}`;
+                        }
+                        return "-";
+                    }
+
+                    const checkIn = formatHHMM(data.checkInTime);
+                    const checkOut = formatHHMM(data.checkOutTime);
+                    const hoursWorked = parseFloat(data.hoursWorked) || 0;
+
+                    document.getElementById('detail-checkin').innerText = checkIn;
+                    document.getElementById('detail-checkout').innerText = checkOut;
+
+                    const totalMinutes = Math.round(hoursWorked * 60);
+                    const hours = Math.floor(totalMinutes / 60);
+                    const minutes = totalMinutes % 60;
+
+                    let hoursText = `${hours} Hr${hours !== 1 ? 's' : ''}`;
+                    let minutesText = minutes > 0 ? ` ${minutes} Min${minutes !== 1 ? 's' : ''}` : '';
+
+                    document.getElementById('detail-hours').innerText = `${hoursText}${minutesText} Worked`;
+
+                    const status = data.status || "Absent";
+                    statusEl.innerText = status;
+                    statusEl.className = "status-pill " + status;
+                }
+
+                calendarContent.style.display = 'none';
+                detailSection.style.display = 'block';
+                hideLoader();
+            })
+            .catch(error => {
+                console.error('Error fetching day details:', error);
+                hideLoader();
+            });
+    }
+
+    function hideAttendanceDetails() {
+    document.getElementById('attendance-detail-section').style.display = 'none';
+    document.getElementById('attendance-calendar-content').style.display = 'block';
+
+    if (attendanceCalendarInstance) {
+        attendanceCalendarInstance.render();
+    }
+  }
+
+    // Existing functions modified to use the new showSection function
+    document.getElementById('total-employees-card').addEventListener('click', function(event) {
+      event.preventDefault();
+      showSection('employee-details-section');
+      const tbody = document.querySelector('#employees-table tbody');
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Loading...</td></tr>';
+      fetch('/employees')
+        .then(response => {
+          if (!response.ok) throw new Error('Network response was not OK');
+          return response.json();
+        })
+        .then(data => {
+          tbody.innerHTML = '';
+          if (data.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No employees found.</td></tr>';
+          } else {
+            data.forEach(emp => {
+              let idProofLink = '-';
+              let resumeLink = '-';
+              if (currentUserRole === 'ADMIN' || currentUserRole === 'HR') {
+                if (emp.idProofPath) {
+                  idProofLink = `<a href="${getSafeUploadLink(emp.idProofPath)}" target="_blank" class="doc-link"><i class="fa fa-eye"></i></a>`;
+                }
+                if (emp.resumePath) {
+                  resumeLink = `<a href="${getSafeUploadLink(emp.resumePath)}" target="_blank" title="View Resume" class="doc-link"><i class="fa fa-eye"></i></a>`;
+                }
+              }
+              const row = `
+                <tr>
+                  <td>${emp.fullName}</td>
+                  <td>${emp.email}</td>
+                  <td>${emp.phone || '-'}</td>
+                  <td>${emp.departmentName || '-'}</td>
+                  <td>${emp.authProvider || '-'}</td>
+                  <td style="text-align:center;">${idProofLink}</td>
+                  <td style="text-align:center;">${resumeLink}</td>
+                </tr>`;
+              tbody.innerHTML += row;
+            });
+          }
+        })
+        .catch(error => {
+          tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:red;">Error loading employees.</td></tr>`;
+          console.error('Fetch error:', error);
+          hideLoader();
+        });
+    });
 
    // Departments List Card Click
    document.getElementById('total-departments-card').addEventListener('click', function() {
+       showSection('department-details-section');
        loadDepartments();
-       document.getElementById('department-details-section').style.display = 'block';
-       document.getElementById('dashboard-section').style.display = 'none';
-       document.getElementById('audit-logs-section').style.display = 'none';
-       document.getElementById('employee-details-section').style.display = 'none';
-       document.getElementById('hr-details-section').style.display = 'none'; // Added line
    });
-
-   function hideDepartmentDetails() {
-       document.getElementById('department-details-section').style.display = 'none';
-       document.getElementById('dashboard-section').style.display = 'grid';
-   }
 
    // Load Departments from API and populate table
    function loadDepartments() {
@@ -439,7 +499,6 @@ function getSafeUploadLink(path) {
                        tbody.innerHTML += row;
                    });
 
-                   // Attach event listeners for edit buttons
                    document.querySelectorAll('.edit-btn').forEach(btn => {
                        btn.addEventListener('click', onEditClick);
                    });
@@ -530,7 +589,6 @@ function getSafeUploadLink(path) {
        })
        .then(data => {
            alert('Department updated successfully');
-           // Reload departments to reflect changes cleanly
            loadDepartments();
        })
        .catch(error => {
@@ -548,7 +606,9 @@ function getSafeUploadLink(path) {
        actionTd.innerHTML = `<button class="action-btn edit-btn">Edit</button>`;
        actionTd.querySelector('.edit-btn').addEventListener('click', onEditClick);
    }
-    document.getElementById('total-hrs-card').addEventListener('click', function() {
+
+   document.getElementById('total-hrs-card').addEventListener('click', function() {
+       showSection('hr-details-section');
        const tbody = document.querySelector('#hr-table tbody');
        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Loading...</td></tr>';
 
@@ -573,20 +633,12 @@ function getSafeUploadLink(path) {
                        </tr>`;
                    });
                }
-               document.getElementById('dashboard-section').style.display = 'none';
-               document.getElementById('hr-details-section').style.display = 'block';
            })
            .catch(err => {
                console.error('Error loading HRs:', err);
                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:red;">Error loading HR list.</td></tr>';
            });
    });
-
-   function hideHRDetails() {
-       document.getElementById('hr-details-section').style.display = 'none';
-       document.getElementById('dashboard-section').style.display = 'grid';
-   }
-
 
   function loadAnnouncements() {
     showLoader();
@@ -642,15 +694,12 @@ function saveAnnouncement() {
     return;
   }
 
-  // ✅ Current time lelo (hh:mm:ss)
   const now = new Date();
-  const timeStr = now.toTimeString().split(' ')[0];  // "HH:MM:SS"
-
-  // ✅ Date + time merge karke proper format
+  const timeStr = now.toTimeString().split(' ')[0];
   const payload = {
     title,
     content,
-    createdAt: selectedDate + "T" + timeStr   // e.g. "2025-08-19T07:25:32"
+    createdAt: selectedDate + "T" + timeStr
   };
 
   if (editingEvent) {
@@ -682,8 +731,7 @@ function saveAnnouncement() {
   }
 
   document.getElementById('total-announcements-card').addEventListener('click', () => {
-    document.getElementById('dashboard-section').style.display='none';
-    document.getElementById('announcement-details-section').style.display='block';
+    showSection('announcement-details-section');
 
     if (!calendar) {
       calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
@@ -707,10 +755,6 @@ function saveAnnouncement() {
     loadAnnouncements();
   });
 
-function backToDashboard() {
-    document.getElementById('announcement-details-section').style.display = 'none';
-    document.getElementById('dashboard-section').style.display = 'grid';
-  }
 
   window.onclick=function(e){ if(e.target.classList.contains('modal')) closeModal(); };
   window.addEventListener('DOMContentLoaded', hideLoader);

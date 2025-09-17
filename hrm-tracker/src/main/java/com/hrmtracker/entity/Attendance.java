@@ -22,7 +22,7 @@ public class Attendance {
 
     private LocalTime checkInTime;   // Renamed from checkIn
     private LocalTime checkOutTime;  // Renamed from checkOut
-    private Long totalHours;         // Hours worked
+    private Double  totalHours;         // Hours worked
 
     private String status;           // Present / Absent / Leave
 
